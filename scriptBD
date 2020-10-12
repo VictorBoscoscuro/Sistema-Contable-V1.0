@@ -1,0 +1,46 @@
+    recibe_saldo BOOLEAN NOT NULL,
+    tipo_cuenta ENUM("ACTIVO","PASIVO","PATRIMONIO","RESULTADO_POSITIVO","RESULTADO_NEGATIVO") NOT NULL,
+    saldo_actual DOUBLE NOT NULL
+);
+
+CREATE TABLE asiento(
+	id_asiento BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    id_usuario BIGINT NOT NULL
+);
+
+CREATE TABLE libro_diario(
+	id_libro_diario BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATE NOT NULL,
+    detalles VARCHAR(255) DEFAULT "Sin detalles especificados"
+);
+
+CREATE TABLE asiento_libro_diario(
+	id_asiento_libro_diario BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_asiento BIGINT NOT NULL,
+    id_libro_diario BIGINT NOT NULL,
+    CONSTRAINT FKasiento_asiento_libro_diario FOREIGN KEY(id_asiento) REFERENCES asiento(id_asiento),
+    CONSTRAINT FKlibro_diario_asiento_libro_diario FOREIGN KEY(id_libro_diario) REFERENCES libro_diario(id_libro_diario)
+);
+
+
+
+CREATE TABLE asiento_cuenta(
+	id_asiento_cuenta BIGINT AUTO_INCREMENT PRIMARY KEY,
+	id_cuenta BIGINT NOT NULL,
+    id_asiento BIGINT NOT NULL,
+    saldo_parcial DOUBLE NOT NULL,
+	debe DOUBLE DEFAULT 0,
+    haber DOUBLE DEFAULT 0,
+    CONSTRAINT FKcuenta_asiento_cuenta FOREIGN KEY (id_cuenta) REFERENCES cuenta(id_cuenta),
+    CONSTRAINT FKasiento_asiento_cuenta FOREIGN KEY (id_asiento) REFERENCES asiento(id_asiento)
+);
+
+CREATE TABLE usuario(
+	id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(30) NOT NULL,
+    clave BLOB NOT NULL,
+    tipo_usuario ENUM("USER","SUPERUSER"),
+    alias VARCHAR(100) NOT NULL
+)
+
