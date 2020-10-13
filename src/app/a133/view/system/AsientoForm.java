@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -688,9 +689,7 @@ public class AsientoForm extends javax.swing.JFrame {
 
     
     private boolean verificarPartidaDoble(Double debe, Double haber){
-        if(debe==haber && debe != 0.0){
-            return true;
-        } else return false;
+        return Objects.equals(debe, haber) && debe != 0.0;
     }
     
     private void restaurarMatriz(){
@@ -722,7 +721,7 @@ public class AsientoForm extends javax.swing.JFrame {
         matriz[7][2] = "";
     }
     
-    private void reiniciarFrom(){
+    private void reiniciarForm(){
 
         txtFecha1.setText(fechaActualString());
         String sql = "SELECT MAX(id_asiento) AS z FROM asiento;";
@@ -755,12 +754,7 @@ public class AsientoForm extends javax.swing.JFrame {
 
         listaValidos = new ArrayList<Asiento_Cuenta>();
         
-        for (int x=0; x < matriz.length; x++) {
-            for (int y=0; y < matriz[x].length; y++){
-                matriz[x][y] = "";
-                
-            }
-        }
+        restaurarMatriz();
         vaciarTodosCampos();
 
         
@@ -942,6 +936,8 @@ public class AsientoForm extends javax.swing.JFrame {
                         ac.setHaber(0.0);
                         ac.setSaldo_parcial(setearNuevoSaldo(ac.getId_cuenta(),ac.getDebe(),ac.getHaber()));
                         listaValidos.add(ac);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Un movimiento no es correcto");
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
@@ -1274,7 +1270,7 @@ public class AsientoForm extends javax.swing.JFrame {
             case "RESULTADO_POSITIVO":
                 saldoOperado = saldoActual + haber;
             default:
-                return saldoActual;
+                return saldoOperado;
         }
     }
     
@@ -1295,7 +1291,7 @@ public class AsientoForm extends javax.swing.JFrame {
             if(rs.next()){
                 if(chequearCuentaValida(idCuenta, debe, haber)){
                     nuevoSaldo = operarSaldo(rs.getDouble("saldo_actual"), debe, haber, rs.getString("tipo_cuenta"));
-                }
+                } 
             } 
         } catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -1333,48 +1329,48 @@ public class AsientoForm extends javax.swing.JFrame {
             
             if(rs.next()){
                 if(rs.getBoolean("recibe_saldo")){
-                switch(rs.getString("tipo_cuenta")){
-                    case "ACTIVO":
-                        if((rs.getDouble("saldo_actual")-haber)>=0.0){
-                            valida = true;
-                            break;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                            break;
+                    switch(rs.getString("tipo_cuenta")){
+                        case "ACTIVO":
+                            if((rs.getDouble("saldo_actual")-haber)>=0.0){
+                                valida = true;
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                break;
+                            }
+                        case "PASIVO":
+                            if((rs.getDouble("saldo_actual")-debe)>=0.0){
+                                valida = true;
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                break;
+                            }
+                        case "PATRIMONIO":
+                            if((rs.getDouble("saldo_actual")-debe)>=0.0){
+                                valida = true;
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                break;
+                            }
+                        case "RESULTADO_NEGATIVO":
+                            if(debe > 0.0){
+                                valida = true;
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Los resultados negativos van por el debe padre...");
+                                break;
+                            }
+                        case "RESULTADO_POSITIVO":
+                            if(haber > 0.0){
+                                valida = true;
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Los resultados positivos van por el haber padre");
+                                break;
+                            }
                         }
-                    case "PASIVO":
-                        if((rs.getDouble("saldo_actual")-debe)>=0.0){
-                            valida = true;
-                            break;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                            break;
-                        }
-                    case "PATRIMONIO":
-                        if((rs.getDouble("saldo_actual")-debe)>=0.0){
-                            valida = true;
-                            break;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                            break;
-                        }
-                    case "RESULTADO_NEGATIVO":
-                        if(debe > 0.0){
-                            valida = true;
-                            break;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Los resultados negativos van por el debe padre...");
-                            break;
-                        }
-                    case "RESULTADO_POSITIVO":
-                        if(haber > 0.0){
-                            valida = true;
-                            break;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Los resultados positivos van por el haber padre");
-                            break;
-                        }
-                    }
                 } else JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no puede recibir saldo!");
             }
         }catch (Exception e) {
@@ -1442,8 +1438,19 @@ public class AsientoForm extends javax.swing.JFrame {
                         ps.setDouble(5, ac.getHaber());
                         ps.executeUpdate();
                     }
+                    
+                    sql = "UPDATE cuenta SET saldo_actual = ? WHERE id_cuenta = ?;";
+                    ps = con.prepareStatement(sql);
+                    for(Asiento_Cuenta ac:listaValidos){
+                        ps.setDouble(1, ac.getSaldo_parcial());
+                        ps.setLong(2, ac.getId_cuenta());
+                        ps.executeUpdate();
+                    }
+                    
+                    
                     con.commit();
-                    reiniciarFrom();
+                    JOptionPane.showMessageDialog(null, "Insercion exitosa");
+                    reiniciarForm();
 
                 }catch (Exception e) {
                     JOptionPane.showMessageDialog(null,"Error al insertar asiento "+e.getMessage());
@@ -1456,24 +1463,18 @@ public class AsientoForm extends javax.swing.JFrame {
                     } catch (Exception e ) {}
                 }
 
-                } else{
-                    int opcion = JOptionPane.showConfirmDialog(null,"Desea reiniciar los datos?", "No se cumple la partida doble",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            } else{
+                    int opcion = JOptionPane.showConfirmDialog(null,"Desea reiniciar el formulario?", "Error en los datos",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if(opcion == JOptionPane.YES_OPTION){
-                            reiniciarFrom();
+                            reiniciarForm();
                     } else if (opcion == JOptionPane.NO_OPTION){
                         JOptionPane.showMessageDialog(null, "Revise sus datos");
-                        for (int x=0; x < matriz.length; x++) {
-                            for (int y=1; y < matriz[x].length; y++){
-                                matriz[x][y] = "";
-                            }
-                        }
+                        restaurarMatriz();
+                        listaValidos = new ArrayList<Asiento_Cuenta>();
                     } else if (opcion == JOptionPane.CLOSED_OPTION){
                         JOptionPane.showMessageDialog(null, "Revise sus datos");
-                        for (int x=0; x < matriz.length; x++) {
-                            for (int y=1; y < matriz[x].length; y++){
-                                matriz[x][y] = "";
-                            }
-                        }   
+                        restaurarMatriz();  
+                        listaValidos = new ArrayList<Asiento_Cuenta>();
                     }
                 }
             
@@ -1485,10 +1486,16 @@ public class AsientoForm extends javax.swing.JFrame {
                 if(opcion == JOptionPane.YES_OPTION){
                     restaurarMatriz();
                     vaciarTodosCampos();
+                    listaValidos = new ArrayList<Asiento_Cuenta>();
+                    movimientosValidosLista();
                 } else if (opcion == JOptionPane.NO_OPTION){
                     restaurarMatriz();
+                    listaValidos = new ArrayList<Asiento_Cuenta>();
+                    movimientosValidosLista();
                 } else if (opcion == JOptionPane.CANCEL_OPTION){
                     restaurarMatriz();
+                    listaValidos = new ArrayList<Asiento_Cuenta>();
+                    movimientosValidosLista();
                 }
             
             
