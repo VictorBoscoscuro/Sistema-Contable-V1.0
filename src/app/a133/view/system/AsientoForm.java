@@ -1261,17 +1261,21 @@ public class AsientoForm extends javax.swing.JFrame {
         switch(tipoCuenta){
             case "ACTIVO":
                 saldoOperado = saldoActual + debe - haber;
+                break;
             case "PASIVO":
                 saldoOperado = saldoActual - debe + haber;
+                break;
             case "PATRIMONIO":
                 saldoOperado = saldoActual - debe + haber;
+                break;
             case "RESULTADO_NEGATIVO":
                 saldoOperado = saldoActual + debe;
+                break;
             case "RESULTADO_POSITIVO":
                 saldoOperado = saldoActual + haber;
-            default:
-                return saldoOperado;
+                break;
         }
+        return saldoOperado;
     }
     
     
