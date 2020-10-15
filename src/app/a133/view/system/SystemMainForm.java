@@ -20,6 +20,7 @@ public class SystemMainForm extends javax.swing.JFrame {
      */
     public SystemMainForm() {
         initComponents();
+        setLocationRelativeTo(null);
         setTitle("Bienvenido/a "+LoginForm.username+" |"+LoginForm.alias+"|");
         Image icon = new ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png")).getImage();      //64px
         setIconImage(icon);
@@ -74,6 +75,11 @@ public class SystemMainForm extends javax.swing.JFrame {
         jButton3.setText("Libros Mayores");
 
         btnGestionUsuarios.setText("Gestionar Usuarios");
+        btnGestionUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionUsuariosActionPerformed(evt);
+            }
+        });
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png"))); // NOI18N
 
@@ -156,6 +162,12 @@ public class SystemMainForm extends javax.swing.JFrame {
         asientoForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionUsuariosActionPerformed
+        UserManagementFrom form = new UserManagementFrom();
+        form.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnGestionUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
