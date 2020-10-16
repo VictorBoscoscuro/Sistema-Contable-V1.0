@@ -21,12 +21,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author victo
  */
-public class UserManagementFrom extends javax.swing.JFrame {
+public class UserManagementForm extends javax.swing.JFrame {
 
     /**
      * Creates new form UserManagementFrom
      */
-    public UserManagementFrom() {
+    public UserManagementForm() {
         initComponents();
         setTitle("Usuarios");
         setLocationRelativeTo(null);
@@ -89,6 +89,7 @@ public class UserManagementFrom extends javax.swing.JFrame {
         btnVerTodos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Username");
 
@@ -145,10 +146,25 @@ public class UserManagementFrom extends javax.swing.JFrame {
         });
 
         btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         btnVerTodos.setText("Ver Todos");
         btnVerTodos.addActionListener(new java.awt.event.ActionListener() {
@@ -291,7 +307,7 @@ public class UserManagementFrom extends javax.swing.JFrame {
                 txtAlias.setText(rs.getString("alias"));
                 if("SUPERUSER".equals(rs.getString("tipo_usuario"))){
                     chkSuperuser.setSelected(true);
-                }
+                } else chkSuperuser.setSelected(false);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error al traer los datos!");
@@ -308,11 +324,107 @@ public class UserManagementFrom extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtUsuariosMouseClicked
 
+    private void vaciarCampos(){
+        txtUsername.setText(null);
+        txtAlias.setText(null);
+        txtClave.setText(null);
+        chkSuperuser.setSelected(false);
+    }
+    
     private void btnVolverMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverMenuActionPerformed
         SystemMainForm form = new SystemMainForm();
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverMenuActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        PreparedStatement ps = null;
+        MyConnection mycon = new MyConnection();
+        Connection conn = mycon.getMyConnection();
+        
+        try {
+            
+            String sql = "DELETE FROM usuario WHERE username = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, txtUsername.getText());
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Usuario eliminado con exito!");
+            vaciarCampos();
+    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error al eliminar el usuario!");
+        } finally{
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                conn.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        PreparedStatement ps = null;
+        MyConnection mycon = new MyConnection();
+        Connection conn = mycon.getMyConnection();
+        
+        try {
+            
+            String sql = "UPDATE usuario SET username = ?, alias = ?, tipo_usuario = ?, clave = ? WHERE username = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, txtUsername.getText());
+            ps.setString(2, txtAlias.getText());
+            if(chkSuperuser.isSelected()){
+                ps.setString(3, "SUPERUSER");
+            } else ps.setString(3, "USER");
+            ps.setString(4, String.valueOf(txtClave.getPassword()));
+            ps.setString(5, txtUsername.getText());
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Usuario actualizado con exito!");
+            vaciarCampos();
+    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error al actualizar el usuario!");
+        } finally{
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                conn.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        PreparedStatement ps = null;
+        MyConnection mycon = new MyConnection();
+        Connection conn = mycon.getMyConnection();
+        
+        try {
+            
+            String sql = "INSERT INTO usuario(username,clave,alias,tipo_usuario) VALUES(?,?,?,?);";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, txtUsername.getText());
+            ps.setString(2, String.valueOf(txtClave.getPassword()));
+            ps.setString(3, txtAlias.getText());
+            if(chkSuperuser.isSelected()){
+                ps.setString(4, "SUPERUSER");
+            } else ps.setString(4, "USER");
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Usuario cargado con exito!");
+            vaciarCampos();
+    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error al cargar el nuevo usuario!");
+        } finally{
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                conn.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,20 +443,21 @@ public class UserManagementFrom extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserManagementFrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserManagementForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserManagementFrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserManagementForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserManagementFrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserManagementForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserManagementFrom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserManagementForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserManagementFrom().setVisible(true);
+                new UserManagementForm().setVisible(true);
             }
         });
     }

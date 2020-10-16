@@ -12,22 +12,27 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 
-public class AsientoForm extends javax.swing.JFrame {
+public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
     
     
     public AsientoForm() {
@@ -37,18 +42,8 @@ public class AsientoForm extends javax.swing.JFrame {
         Image icon = new ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png")).getImage();      //64px
         setIconImage(icon);
         txtFecha1.setText(fechaActualString());
-        setColumnsWeight();
+        formatoTabla();
         
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(0, 139, 139));
-        headerRenderer.setForeground(Color.BLACK);
-
-        
-        for (int i = 0; i < jtCuentas.getModel().getColumnCount(); i++) {          //Recorro y se lo aplico a cada header
-        jtCuentas.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
-        jtCuentas.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
         String sql = "SELECT MAX(id_asiento) AS z FROM asiento;";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -78,11 +73,20 @@ public class AsientoForm extends javax.swing.JFrame {
                 }
     }
 
-    private void setColumnsWeight(){            //Ajusta el ancho de las columnas
-        int[] weights = {30,150,30};
+    private void formatoTabla(){            //Ajusta el ancho de las columnas
+        int[] weights = {12,125,70};
             
         for(int i = 0; i < jtCuentas.getColumnCount(); i++){
             jtCuentas.getColumnModel().getColumn(i).setPreferredWidth(weights[i]);
+        }
+        
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(0, 139, 139));
+        headerRenderer.setForeground(Color.BLACK);
+
+        
+        for (int i = 0; i < jtCuentas.getModel().getColumnCount(); i++) {          //Recorro y se lo aplico a cada header
+        jtCuentas.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
     }
     
@@ -136,7 +140,7 @@ public class AsientoForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnBuscarCodigo = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnBuscarNombre = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         txtCodigoBuscarCuenta = new javax.swing.JTextField();
         txtNombreBuscarCuenta = new javax.swing.JTextField();
@@ -146,6 +150,8 @@ public class AsientoForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
+        btnTodasCuentas = new javax.swing.JButton();
+        btnRecibeSaldoSeleccionada = new javax.swing.JButton();
 
         jButton2.setText("Validar");
 
@@ -505,10 +511,10 @@ public class AsientoForm extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Buscar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarNombre.setText("Buscar");
+        btnBuscarNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnBuscarNombreActionPerformed(evt);
             }
         });
 
@@ -517,6 +523,7 @@ public class AsientoForm extends javax.swing.JFrame {
 
         btnCopiarCodigoPortapapeles.setText("Copiar codigo");
 
+        jtCuentas.setForeground(new java.awt.Color(0, 0, 0));
         jtCuentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -548,6 +555,7 @@ public class AsientoForm extends javax.swing.JFrame {
         jtCuentas.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtCuentas.setRowHeight(22);
         jtCuentas.setSelectionBackground(new java.awt.Color(255, 255, 153));
+        jtCuentas.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jtCuentas.setShowHorizontalLines(false);
         jtCuentas.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jtCuentas);
@@ -561,6 +569,20 @@ public class AsientoForm extends javax.swing.JFrame {
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
+            }
+        });
+
+        btnTodasCuentas.setText("Ver Todas");
+        btnTodasCuentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTodasCuentasActionPerformed(evt);
+            }
+        });
+
+        btnRecibeSaldoSeleccionada.setText("Recibe?");
+        btnRecibeSaldoSeleccionada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecibeSaldoSeleccionadaActionPerformed(evt);
             }
         });
 
@@ -588,21 +610,24 @@ public class AsientoForm extends javax.swing.JFrame {
                         .addGap(220, 220, 220)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnBuscarCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(txtCodigoBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(12, 12, 12)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnCopiarCodigoPortapapeles, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(btnBuscarNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                            .addComponent(btnRecibeSaldoSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(btnCopiarCodigoPortapapeles)
                                             .addComponent(txtNombreBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTodasCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -612,17 +637,23 @@ public class AsientoForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnIngresarAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnIngresarAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8)))
+                        .addGap(0, 21, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTodasCuentas)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -635,12 +666,13 @@ public class AsientoForm extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
+                            .addComponent(btnBuscarNombre)
                             .addComponent(txtNombreBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCopiarCodigoPortapapeles)
-                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRecibeSaldoSeleccionada)))))
         );
 
         pack();
@@ -673,12 +705,100 @@ public class AsientoForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumero1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnBuscarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNombreActionPerformed
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        
+        try {
+            DefaultTableModel model = new DefaultTableModel();
+            jtCuentas.setModel(model);
+            String nombre = txtNombreBuscarCuenta.getText().toUpperCase();
+            
+            sql="SELECT codigo,nombre,tipo_cuenta FROM cuenta WHERE nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData rsMD = rs.getMetaData();
+            
+            int numberColumns = rsMD.getColumnCount();
+            
+            model.addColumn("Codigo");
+            model.addColumn("Nombre");
+            model.addColumn("Tipo");
+            
+            formatoTabla();
+            
+            while(rs.next()){
+                Object[] rows = new Object[numberColumns];
+                for (int i = 0; i<numberColumns; i++) {
+                    rows[i] = rs.getObject(i+1);
+                }
+                model.addRow(rows);
+            }
+            
+        } catch (SQLException e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+            txtNombreBuscarCuenta.setText("");
+        }
+    }//GEN-LAST:event_btnBuscarNombreActionPerformed
 
     private void btnBuscarCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarCodigoActionPerformed
-       
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        
+        try {
+            DefaultTableModel model = new DefaultTableModel();
+            jtCuentas.setModel(model);
+            
+            sql="SELECT codigo,nombre,tipo_cuenta FROM cuenta WHERE codigo = ? ORDER BY codigo;";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, txtCodigoBuscarCuenta.getText());
+            rs = ps.executeQuery();
+            ResultSetMetaData rsMD = rs.getMetaData();
+            
+            int numberColumns = rsMD.getColumnCount();
+            
+            model.addColumn("Codigo");
+            model.addColumn("Nombre");
+            model.addColumn("Tipo");
+            
+            formatoTabla();
+            
+            while(rs.next()){
+                Object[] rows = new Object[numberColumns];
+                for (int i = 0; i<numberColumns; i++) {
+                    rows[i] = rs.getObject(i+1);
+                }
+                model.addRow(rows);
+            }
+            
+        } catch (SQLException e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+            txtCodigoBuscarCuenta.setText("");
+        }
     }//GEN-LAST:event_btnBuscarCodigoActionPerformed
 
     private void txtDebe1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe1KeyTyped
@@ -1530,7 +1650,7 @@ public class AsientoForm extends javax.swing.JFrame {
     private void txtHaber1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber1KeyTyped
         int c = evt.getKeyChar();
         
-        if(c == 46 && txtDebe1.getText().indexOf(".") > -1){
+        if(c == 46 && txtHaber1.getText().indexOf(".") > -1){
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
@@ -1818,7 +1938,8 @@ public class AsientoForm extends javax.swing.JFrame {
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            } 
         }
     }//GEN-LAST:event_txtCuenta1KeyTyped
 
@@ -1898,51 +2019,100 @@ public class AsientoForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void btnTodasCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodasCuentasActionPerformed
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+            DefaultTableModel model = new DefaultTableModel();
+            jtCuentas.setModel(model);
+            sql="SELECT codigo,nombre,tipo_cuenta FROM cuenta ORDER BY codigo;";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData rsMD = rs.getMetaData();
+            
+            int numberColumns = rsMD.getColumnCount();
+            
+            model.addColumn("Codigo");
+            model.addColumn("Nombre");
+            model.addColumn("Tipo");
+            
+            formatoTabla();
+            
+            while(rs.next()){
+                Object[] rows = new Object[numberColumns];
+                for (int i = 0; i<numberColumns; i++) {
+                    rows[i] = rs.getObject(i+1);
+                }
+                model.addRow(rows);
+            }
+            
+        } catch (SQLException e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_btnTodasCuentasActionPerformed
+
+    private void btnRecibeSaldoSeleccionadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecibeSaldoSeleccionadaActionPerformed
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        
+        try {
+            int fila_seleccionada = jtCuentas.getSelectedRow();
+            String codigoX = jtCuentas.getValueAt(fila_seleccionada, 0).toString();
+            if(!"".equals(codigoX)){
+                sql="SELECT recibe_saldo FROM cuenta WHERE codigo ="+codigoX+";";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    if(rs.getBoolean("recibe_saldo")){
+                        JOptionPane.showMessageDialog(null, "La cuenta seleccionada puede recibir saldo");
+                    } else JOptionPane.showMessageDialog(null, "La cuenta seleccionada NO puede recibir saldo");
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Seleccione una cuenta");
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        } 
+    }//GEN-LAST:event_btnRecibeSaldoSeleccionadaActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AsientoForm().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Haber;
     private javax.swing.JLabel Haber1;
     private javax.swing.JButton btnBuscarCodigo;
+    private javax.swing.JButton btnBuscarNombre;
     private javax.swing.JButton btnCopiarCodigoPortapapeles;
     private javax.swing.JButton btnIngresarAsientos;
+    private javax.swing.JButton btnRecibeSaldoSeleccionada;
+    private javax.swing.JButton btnTodasCuentas;
     private javax.swing.JButton btnVolver;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1985,4 +2155,9 @@ public class AsientoForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreBuscarCuenta;
     private javax.swing.JTextField txtNumero1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        //To change body of generated methods, choose Tools | Templates.
+    }
 }

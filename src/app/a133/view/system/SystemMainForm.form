@@ -29,16 +29,16 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jButton2" min="-2" pref="217" max="-2" attributes="0"/>
+                          <Component id="btnLibroDiario" min="-2" pref="217" max="-2" attributes="0"/>
                           <Component id="icoUsers" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jButton1" pref="240" max="32767" attributes="0"/>
+                          <Component id="btnAsiento" pref="240" max="32767" attributes="0"/>
                           <Component id="btnGestionUsuarios" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton3" max="32767" attributes="0"/>
+                      <Component id="btnLibroMayor" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jLabel1" pref="700" max="32767" attributes="0"/>
               </Group>
@@ -74,9 +74,9 @@
               <Component id="jLabel9" min="-2" pref="39" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
+                  <Component id="btnAsiento" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
+                  <Component id="btnLibroDiario" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
+                  <Component id="btnLibroMayor" alignment="3" min="-2" pref="72" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
@@ -97,12 +97,12 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnAsiento">
       <Properties>
         <Property name="text" type="java.lang.String" value="Insertar Asientos"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAsientoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -114,15 +114,15 @@
         <Property name="text" type="java.lang.String" value="Sistema desarrollado para Sistemas Administrativos II 2020 - Victor Boscoscuro"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnLibroDiario">
       <Properties>
         <Property name="text" type="java.lang.String" value="Libros Diarios"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLibroDiarioActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="btnLibroMayor">
       <Properties>
         <Property name="text" type="java.lang.String" value="Libros Mayores"/>
       </Properties>
