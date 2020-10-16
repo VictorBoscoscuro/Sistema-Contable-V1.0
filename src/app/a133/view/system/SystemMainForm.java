@@ -25,10 +25,10 @@ public class SystemMainForm extends javax.swing.JFrame {
         Image icon = new ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png")).getImage();      //64px
         setIconImage(icon);
         if("USER".equals(LoginForm.rol)){
-            icoUsers.setEnabled(false);
-            btnGestionUsuarios.setEnabled(false);
             icoUsers.setVisible(false);
             btnGestionUsuarios.setVisible(false);
+            icoCuentas.setVisible(false);
+            btnGestionCuentas.setVisible(false);
         }
     }
 
@@ -50,6 +50,8 @@ public class SystemMainForm extends javax.swing.JFrame {
         icoUsers = new javax.swing.JLabel();
         rSLabelFecha2 = new rojeru_san.RSLabelFecha();
         jLabel9 = new javax.swing.JLabel();
+        btnGestionCuentas = new javax.swing.JButton();
+        icoCuentas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -91,6 +93,15 @@ public class SystemMainForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("A133 -beta");
 
+        btnGestionCuentas.setText("Gestionar Plan de Cuentas");
+        btnGestionCuentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionCuentasActionPerformed(evt);
+            }
+        });
+
+        icoCuentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/a133/view/img/cuentas32.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,11 +112,13 @@ public class SystemMainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnLibroDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(icoUsers))
+                            .addComponent(icoUsers)
+                            .addComponent(icoCuentas))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAsiento, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGestionCuentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(btnLibroMayor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
@@ -141,10 +154,14 @@ public class SystemMainForm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                         .addComponent(icoUsers)
-                        .addGap(128, 128, 128))
+                        .addGap(35, 35, 35)
+                        .addComponent(icoCuentas)
+                        .addGap(61, 61, 61))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGestionCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rSLabelFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
@@ -168,6 +185,10 @@ public class SystemMainForm extends javax.swing.JFrame {
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnGestionUsuariosActionPerformed
+
+    private void btnGestionCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCuentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGestionCuentasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,9 +227,11 @@ public class SystemMainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsiento;
+    private javax.swing.JButton btnGestionCuentas;
     private javax.swing.JButton btnGestionUsuarios;
     private javax.swing.JButton btnLibroDiario;
     private javax.swing.JButton btnLibroMayor;
+    private javax.swing.JLabel icoCuentas;
     private javax.swing.JLabel icoUsers;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel8;

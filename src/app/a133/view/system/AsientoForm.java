@@ -81,7 +81,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         }
         
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(0, 139, 139));
+        headerRenderer.setBackground(new Color(255, 215, 0));
         headerRenderer.setForeground(Color.BLACK);
 
         
@@ -522,6 +522,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         jLabel6.setText("Buscar por nombre");
 
         btnCopiarCodigoPortapapeles.setText("Copiar codigo");
+        btnCopiarCodigoPortapapeles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopiarCodigoPortapapelesActionPerformed(evt);
+            }
+        });
 
         jtCuentas.setForeground(new java.awt.Color(0, 0, 0));
         jtCuentas.setModel(new javax.swing.table.DefaultTableModel(
@@ -2099,6 +2104,21 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             } catch (Exception e ) {}
         } 
     }//GEN-LAST:event_btnRecibeSaldoSeleccionadaActionPerformed
+
+    private void btnCopiarCodigoPortapapelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiarCodigoPortapapelesActionPerformed
+        try {
+            int fila_seleccionada = jtCuentas.getSelectedRow();
+            String codigoX = jtCuentas.getValueAt(fila_seleccionada, 0).toString();
+            if(!"".equals(codigoX)){
+                StringSelection ss = new StringSelection((codigoX));
+                Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+                cb.setContents(ss, null);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Seleccione una cuenta");
+        }          
+    }//GEN-LAST:event_btnCopiarCodigoPortapapelesActionPerformed
 
     
 
