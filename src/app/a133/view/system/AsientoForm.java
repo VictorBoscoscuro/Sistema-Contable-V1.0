@@ -9,13 +9,15 @@ import app.a133.connection.MyConnection;
 import app.a133.model.Asiento;
 import app.a133.model.Asiento_Cuenta;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -528,6 +530,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        jtCuentas.setBackground(new java.awt.Color(204, 204, 204));
         jtCuentas.setForeground(new java.awt.Color(0, 0, 0));
         jtCuentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -561,7 +564,6 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         jtCuentas.setRowHeight(22);
         jtCuentas.setSelectionBackground(new java.awt.Color(255, 255, 153));
         jtCuentas.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        jtCuentas.setShowHorizontalLines(false);
         jtCuentas.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jtCuentas);
 
@@ -596,10 +598,36 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(208, 208, 208)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnBuscarCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(txtCodigoBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(btnBuscarNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                                    .addComponent(btnRecibeSaldoSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(btnCopiarCodigoPortapapeles)
+                                                    .addComponent(txtNombreBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnTodasCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnIngresarAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -607,32 +635,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                                 .addGap(138, 138, 138)
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(220, 220, 220)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnBuscarCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtCodigoBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(btnBuscarNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                            .addComponent(btnRecibeSaldoSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btnCopiarCodigoPortapapeles)
-                                            .addComponent(txtNombreBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnTodasCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -642,23 +645,27 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(btnIngresarAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnIngresarAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)))
-                        .addGap(0, 21, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTodasCuentas)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel8)))
+                                .addGap(0, 21, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnTodasCuentas)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -670,14 +677,16 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                         .addGap(11, 11, 11)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnBuscarNombre)
                             .addComponent(txtNombreBuscarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCopiarCodigoPortapapeles)
-                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRecibeSaldoSeleccionada)))))
+                            .addComponent(btnRecibeSaldoSeleccionada)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -1938,83 +1947,122 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
     }//GEN-LAST:event_txtHaber8KeyTyped
 
     private void txtCuenta1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta1KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
                 
-            } 
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta1.setText(getPortapapeles());
+            txtCuenta1.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta1KeyTyped
 
     private void txtCuenta2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta2KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta2.setText(getPortapapeles());
+            txtCuenta2.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta2KeyTyped
 
     private void txtCuenta3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta3KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta3.setText(getPortapapeles());
+            txtCuenta3.transferFocus();
         } 
     }//GEN-LAST:event_txtCuenta3KeyTyped
 
     private void txtCuenta4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta4KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta4.setText(getPortapapeles());
+            txtCuenta4.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta4KeyTyped
 
     private void txtCuenta5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta5KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta5.setText(getPortapapeles());
+            txtCuenta5.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta5KeyTyped
 
     private void txtCuenta6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta6KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta6.setText(getPortapapeles());
+            txtCuenta6.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta6KeyTyped
 
     private void txtCuenta7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta7KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta7.setText(getPortapapeles());
+            txtCuenta7.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta7KeyTyped
 
     private void txtCuenta8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta8KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
             if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, "Solo numeros");
-            }  
+                
+            }
+        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
+            evt.consume();
+            txtCuenta8.setText(getPortapapeles());
+            txtCuenta8.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta8KeyTyped
 
@@ -2105,6 +2153,23 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         } 
     }//GEN-LAST:event_btnRecibeSaldoSeleccionadaActionPerformed
 
+    public String getPortapapeles(){
+        String txt="";
+        
+        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+        
+        Transferable contenido = cb.getContents(null);
+        
+        if(contenido.isDataFlavorSupported(DataFlavor.stringFlavor)){
+            try {
+               txt = (String) contenido.getTransferData(DataFlavor.stringFlavor); 
+            } catch (UnsupportedFlavorException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            } catch (IOException e){}
+        }
+        return txt;
+    }
+    
     private void btnCopiarCodigoPortapapelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiarCodigoPortapapelesActionPerformed
         try {
             int fila_seleccionada = jtCuentas.getSelectedRow();
@@ -2120,6 +2185,37 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         }          
     }//GEN-LAST:event_btnCopiarCodigoPortapapelesActionPerformed
 
+        public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AsientoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AsientoForm().setVisible(true);
+            }
+        });
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
