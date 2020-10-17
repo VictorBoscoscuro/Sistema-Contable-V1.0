@@ -187,7 +187,9 @@ public class SystemMainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGestionUsuariosActionPerformed
 
     private void btnGestionCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionCuentasActionPerformed
-        // TODO add your handling code here:
+        PlanCuentasForm form = new PlanCuentasForm();
+        form.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnGestionCuentasActionPerformed
 
     /**
