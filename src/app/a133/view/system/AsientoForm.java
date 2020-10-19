@@ -560,6 +560,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                 return canEdit [columnIndex];
             }
         });
+        jtCuentas.setFocusable(false);
         jtCuentas.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jtCuentas.setRowHeight(22);
         jtCuentas.setSelectionBackground(new java.awt.Color(255, 255, 153));
@@ -777,10 +778,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         try {
             DefaultTableModel model = new DefaultTableModel();
             jtCuentas.setModel(model);
+            String codigo = txtCodigoBuscarCuenta.getText();
             
-            sql="SELECT codigo,nombre,tipo_cuenta FROM cuenta WHERE codigo = ? ORDER BY codigo;";
+            sql="SELECT codigo,nombre,tipo_cuenta FROM cuenta WHERE codigo LIKE '"+codigo+"%' ORDER BY codigo;";
             ps = con.prepareStatement(sql);
-            ps.setString(1, txtCodigoBuscarCuenta.getText());
+
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             
@@ -1629,8 +1631,6 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                         listaValidos = new ArrayList<Asiento_Cuenta>();
                     }
                 }
-            
-            //ANDAAAAA
             
             
         } else {

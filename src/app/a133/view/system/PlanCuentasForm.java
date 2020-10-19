@@ -288,10 +288,11 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(cbxBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarCuenta)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBuscarCuenta)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -523,11 +524,11 @@ public class PlanCuentasForm extends javax.swing.JFrame {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if(rs.next()){
-                sql = "SELECT * FROM cuenta INNER JOIN asiento_cuenta ON(cuenta.id_cuenta = asiento_cuenta.id_asiento_cuenta) WHERE cuenta.codigo = '"+codigo+"';";
+                sql = "SELECT * FROM cuenta INNER JOIN asiento_cuenta ON(cuenta.id_cuenta = asiento_cuenta.id_cuenta) WHERE cuenta.codigo = '"+codigo+"';";
                 ps = con.prepareStatement(sql);
                 rs2 = ps.executeQuery();
                 if(rs2.next()){
-                    int opcion = JOptionPane.showConfirmDialog(null,"Solo podrá CAMBIAR EL NOMBRE a:"+nombre+" .Desea hacerlo?", "Asientos relacionados",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int opcion = JOptionPane.showConfirmDialog(null,"Solo podrá CAMBIAR EL NOMBRE a: "+nombre+" . Desea hacerlo?", "Asientos relacionados",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if(opcion == JOptionPane.YES_OPTION){
                             try {
                                 if(!"".equals(nombre)){
