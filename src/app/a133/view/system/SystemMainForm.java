@@ -5,9 +5,15 @@
  */
 package app.a133.view.system;
 
+import app.a133.connection.MyConnection;
+import app.a133.view.libros.LibroDiarioGenerarForm;
 import app.a133.view.login.LoginForm;
+import app.a133.view.libros.LibroDiarioGenerarForm;
+import java.sql.Connection;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -29,6 +35,32 @@ public class SystemMainForm extends javax.swing.JFrame {
             btnGestionUsuarios.setVisible(false);
             icoCuentas.setVisible(false);
             btnGestionCuentas.setVisible(false);
+            icoEmpresa.setVisible(false);
+            btnInformacionEmpresa.setVisible(false);
+        }
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String sql = "SELECT * FROM empresa WHERE id_empresa = 1;";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                lblRazonSocial.setText(rs.getString("razon_social"));
+                lblCuit.setText(rs.getString("cuit").substring(0, 2)+"-"+rs.getString("cuit").substring(2, 10)+"-"+rs.getString("cuit").substring(10));
+            }
+        } catch (Exception e) {
+        } finally{
+            try {
+                rs.close();
+            } catch (Exception e) {}
+            try {
+                ps.close();
+            } catch (Exception e) {}
+            try {
+                con.close();
+            } catch (Exception e) {}
         }
     }
 
@@ -42,7 +74,6 @@ public class SystemMainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         btnAsiento = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         btnLibroDiario = new javax.swing.JButton();
         btnLibroMayor = new javax.swing.JButton();
         btnGestionUsuarios = new javax.swing.JButton();
@@ -52,31 +83,37 @@ public class SystemMainForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         btnGestionCuentas = new javax.swing.JButton();
         icoCuentas = new javax.swing.JLabel();
+        btnInformacionEmpresa = new javax.swing.JButton();
+        icoEmpresa = new javax.swing.JLabel();
+        lblRazonSocial = new javax.swing.JLabel();
+        lblCuit = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        btnAsiento.setText("Insertar Asientos");
+        btnAsiento.setText("INSERTAR ASIENTOS");
         btnAsiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAsientoActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 2, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Sistema desarrollado para Sistemas Administrativos II 2020 - Victor Boscoscuro");
-
-        btnLibroDiario.setText("Libros Diarios");
+        btnLibroDiario.setText("LIBRO DIARIO");
         btnLibroDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLibroDiarioActionPerformed(evt);
             }
         });
 
-        btnLibroMayor.setText("Libros Mayores");
+        btnLibroMayor.setText("LIBRO MAYOR");
+        btnLibroMayor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLibroMayorActionPerformed(evt);
+            }
+        });
 
-        btnGestionUsuarios.setText("Gestionar Usuarios");
+        btnGestionUsuarios.setText("GESTIONAR USUARIOS");
         btnGestionUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionUsuariosActionPerformed(evt);
@@ -93,7 +130,7 @@ public class SystemMainForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("A133 -beta");
 
-        btnGestionCuentas.setText("Gestionar Plan de Cuentas");
+        btnGestionCuentas.setText("GESTIONAR PLAN DE CUENTAS");
         btnGestionCuentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionCuentasActionPerformed(evt);
@@ -102,76 +139,115 @@ public class SystemMainForm extends javax.swing.JFrame {
 
         icoCuentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/a133/view/img/cuentas32.png"))); // NOI18N
 
+        btnInformacionEmpresa.setText("INFORMACION DE LA EMPRESA");
+        btnInformacionEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInformacionEmpresaActionPerformed(evt);
+            }
+        });
+
+        icoEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/app/a133/view/img/empresa32.png"))); // NOI18N
+
+        lblRazonSocial.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblRazonSocial.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRazonSocial.setText("EMPRESA");
+
+        lblCuit.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblCuit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCuit.setText("cuit");
+
+        jButton1.setText("SALIR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnLibroDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(icoUsers)
-                            .addComponent(icoCuentas))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAsiento, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGestionCuentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLibroMayor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
-                .addGap(130, 130, 130))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(445, 445, 445)
+                .addContainerGap()
                 .addComponent(jLabel8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(rSLabelFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(424, 424, 424))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnLibroDiario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(icoUsers, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(icoCuentas, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(icoEmpresa, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnAsiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGestionCuentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                                    .addComponent(btnInformacionEmpresa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnLibroMayor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblCuit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblRazonSocial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)))
+                        .addContainerGap(119, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
+                .addComponent(lblRazonSocial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCuit)
+                .addGap(94, 94, 94)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsiento, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLibroDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLibroMayor, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                        .addComponent(icoUsers)
-                        .addGap(35, 35, 35)
-                        .addComponent(icoCuentas)
-                        .addGap(61, 61, 61))
+                    .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(btnGestionUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGestionCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(icoUsers)))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGestionCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(icoCuentas)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rSLabelFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jLabel8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(icoEmpresa)
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnInformacionEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(rSLabelFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLibroDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibroDiarioActionPerformed
-        // TODO add your handling code here:
+        LibroDiarioGenerarForm form = new LibroDiarioGenerarForm();
+        form.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLibroDiarioActionPerformed
 
     private void btnAsientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsientoActionPerformed
@@ -191,6 +267,14 @@ public class SystemMainForm extends javax.swing.JFrame {
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnGestionCuentasActionPerformed
+
+    private void btnInformacionEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInformacionEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInformacionEmpresaActionPerformed
+
+    private void btnLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibroMayorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLibroMayorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,13 +315,17 @@ public class SystemMainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnAsiento;
     private javax.swing.JButton btnGestionCuentas;
     private javax.swing.JButton btnGestionUsuarios;
+    private javax.swing.JButton btnInformacionEmpresa;
     private javax.swing.JButton btnLibroDiario;
     private javax.swing.JButton btnLibroMayor;
     private javax.swing.JLabel icoCuentas;
+    private javax.swing.JLabel icoEmpresa;
     private javax.swing.JLabel icoUsers;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblCuit;
+    private javax.swing.JLabel lblRazonSocial;
     private rojeru_san.RSLabelFecha rSLabelFecha2;
     // End of variables declaration//GEN-END:variables
 }
