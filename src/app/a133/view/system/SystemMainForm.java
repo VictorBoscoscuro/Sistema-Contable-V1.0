@@ -28,8 +28,8 @@ public class SystemMainForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Bienvenido/a "+LoginForm.username+" |"+LoginForm.alias+"|");
-        Image icon = new ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png")).getImage();      //64px
-        setIconImage(icon);
+//        Image icon = new ImageIcon(getClass().getResource("/app/a133/view/img/logo3.png")).getImage();      //64px
+//        setIconImage(icon);
         if("USER".equals(LoginForm.rol)){
             icoUsers.setVisible(false);
             btnGestionUsuarios.setVisible(false);
@@ -157,6 +157,11 @@ public class SystemMainForm extends javax.swing.JFrame {
         lblCuit.setText("cuit");
 
         jButton1.setText("SALIR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -275,6 +280,10 @@ public class SystemMainForm extends javax.swing.JFrame {
     private void btnLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibroMayorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLibroMayorActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
