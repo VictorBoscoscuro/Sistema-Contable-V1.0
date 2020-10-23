@@ -2,6 +2,12 @@
 package app.a133.view.libros;
 
 import app.a133.view.system.SystemMainForm;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,6 +43,39 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setText("Seleccione fecha");
+
+        txtAnio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtAnioFocusLost(evt);
+            }
+        });
+        txtAnio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAnioKeyTyped(evt);
+            }
+        });
+
+        txtMes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtMesFocusLost(evt);
+            }
+        });
+        txtMes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMesKeyTyped(evt);
+            }
+        });
+
+        txtDia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDiaFocusLost(evt);
+            }
+        });
+        txtDia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDiaKeyTyped(evt);
+            }
+        });
 
         jLabel2.setText("Año");
 
@@ -160,6 +199,90 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void txtAnioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAnioKeyTyped
+        if(txtAnio.getText().length() < 4){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");               
+                }
+            }
+        } else evt.consume();
+    }//GEN-LAST:event_txtAnioKeyTyped
+
+    private void txtMesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMesKeyTyped
+        if(txtMes.getText().length() < 2){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");               
+                }
+            }
+        } else evt.consume();
+    }//GEN-LAST:event_txtMesKeyTyped
+
+    private void txtDiaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiaKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            btnGenerar.doClick();
+        }else{
+            if(txtDia.getText().length() < 2){
+                if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8){
+                    if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                        evt.consume();
+                        Toolkit.getDefaultToolkit().beep();
+                        JOptionPane.showMessageDialog(null, "Solo numeros");               
+                    }
+                }
+            } else evt.consume();
+        }
+        
+        
+    }//GEN-LAST:event_txtDiaKeyTyped
+
+    private void txtAnioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAnioFocusLost
+        Integer anio = Integer.parseInt(txtAnio.getText());
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Integer anioActual  = localDate.getYear();
+        if(anio < 1950 || anio > anioActual){
+            JOptionPane.showMessageDialog(null, "Ingrese un año válido...");
+            txtAnio.setText(null);
+            txtAnio.requestFocus();
+        }
+    }//GEN-LAST:event_txtAnioFocusLost
+
+    private void txtMesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMesFocusLost
+        Integer mes = Integer.parseInt(txtMes.getText());
+        if(txtMes.getText().length() == 2){
+            if(mes < 1 || mes > 12){
+                JOptionPane.showMessageDialog(null, "Que calendario raro manejas... Dale hacé las cosas bien.");
+                txtMes.setText(null);
+                txtMes.requestFocus();
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "Recuerde que el formato es MM (2 digitos)");
+            txtMes.setText(null);
+            txtMes.requestFocus();
+        }
+    }//GEN-LAST:event_txtMesFocusLost
+
+    private void txtDiaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDiaFocusLost
+        Integer dia = Integer.parseInt(txtMes.getText());
+        if(txtDia.getText().length() == 2){
+            if(dia < 1 || dia > 31){
+                JOptionPane.showMessageDialog(null, "Que calendario raro manejas... Dale hacé las cosas bien.");
+                txtDia.setText(null);
+                txtDia.requestFocus();
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "Recuerde que el formato es MM (2 digitos)");
+            txtDia.setText(null);
+            txtDia.requestFocus();
+        }
+    }//GEN-LAST:event_txtDiaFocusLost
 
     /**
      * @param args the command line arguments

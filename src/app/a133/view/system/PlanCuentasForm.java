@@ -135,6 +135,11 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 txtCodigoFocusLost(evt);
             }
         });
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
         txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCodigoKeyTyped(evt);
@@ -576,6 +581,10 @@ public class PlanCuentasForm extends javax.swing.JFrame {
             } catch (Exception e) {}
             }
     }//GEN-LAST:event_btnModificarCuentaActionPerformed
+
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
 
     /**
      * @param args the command line arguments
