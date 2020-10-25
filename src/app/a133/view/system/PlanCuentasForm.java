@@ -2,7 +2,6 @@
 package app.a133.view.system;
 
 import app.a133.connection.MyConnection;
-import app.a133.model.Asiento_Cuenta;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;

@@ -9,6 +9,7 @@ import app.a133.connection.MyConnection;
 import app.a133.view.libros.LibroDiarioGenerarForm;
 import app.a133.view.login.LoginForm;
 import app.a133.view.libros.LibroDiarioGenerarForm;
+import app.a133.view.libros.LibroMayorGenerarForm;
 import java.sql.Connection;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -278,7 +279,9 @@ public class SystemMainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInformacionEmpresaActionPerformed
 
     private void btnLibroMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibroMayorActionPerformed
-        // TODO add your handling code here:
+        LibroMayorGenerarForm form = new LibroMayorGenerarForm();
+        form.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLibroMayorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

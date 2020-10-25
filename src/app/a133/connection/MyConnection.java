@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class MyConnection {
     
-    private final String db = "a133betaapp";
+    private final String db = "a133betaapppoblada";
     private final String user = "root";
     private final String password = "root";
     private final String url = "jdbc:mysql://localhost:3306/"+db+"?serverTimezone=UTC";

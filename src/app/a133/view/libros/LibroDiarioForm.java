@@ -107,16 +107,38 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             
             while(rs2.next()){
                 Object[] rows = new Object[numberColumns];
+                
                 LibroDiarioFila l = new LibroDiarioFila();
                 l.setId_asiento_cuenta(rs2.getLong("ID_AC"));
                 l.setCodigo_cuenta(rs2.getString("CODIGO_CUENTA"));
-                l.setNombre_cuenta(rs2.getString("NOMBRE_CUENTA"));
+                if(rs2.getDouble("DEBE") == 0.0){
+                    l.setNombre_cuenta("    "+rs2.getString("NOMBRE_CUENTA"));}
+                else l.setNombre_cuenta(rs2.getString("NOMBRE_CUENTA"));
                 l.setDebe(rs2.getDouble("DEBE"));
                 l.setHaber(rs2.getDouble("HABER"));
                 l.setLeyenda(rs2.getString("LEYENDA"));
-                    filas.add(l);
+                filas.add(l);
+                
                 for (int i = 0; i<numberColumns; i++) {
-                    rows[i] = rs2.getObject(i+1);
+                    if(i==2){
+                        if(rs2.getDouble("DEBE")==0.0){
+                            rows[i] = "    "+rs2.getObject(i+1);
+                        } else {
+                           rows[i] = rs2.getObject(i+1); 
+                        }
+                    }else{
+                        rows[i] = rs2.getObject(i+1);
+                    }
+                    if(i==3){
+                       if(rs2.getDouble("DEBE")==0.0){
+                           rows[i] = "";
+                       } 
+                    }
+                    if(i==4){
+                       if(rs2.getDouble("HABER")==0.0){
+                           rows[i] = "";
+                       } 
+                    }
                     
                 }
                 model.addRow(rows);
@@ -164,7 +186,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         cuentaHR.setHorizontalAlignment(SwingConstants.CENTER);
  
         DefaultTableCellRenderer cuentaCR = new DefaultTableCellRenderer();
-        cuentaCR.setHorizontalAlignment(SwingConstants.CENTER);
+        cuentaCR.setHorizontalAlignment(SwingConstants.LEFT);
         
         jtMovimientos.getColumnModel().getColumn(1).setHeaderRenderer(cuentaHR);
         jtMovimientos.getColumnModel().getColumn(1).setCellRenderer(cuentaCR);
@@ -389,7 +411,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             String fecha = dia+"-"+mes+"-"+anio;
             
             FileOutputStream archivo;
-            File file = new File("C:\\Users\\victo\\Documents\\NetBeansProjects\\App-A133-beta\\App-A133-beta\\src\\app\\a133\\pdf\\reporte"+fecha+".pdf");
+            File file = new File("C:\\Users\\victo\\Desktop\\Reportes\\Libros Diarios\\reporte"+fecha+".pdf");
             archivo = new FileOutputStream(file);
             
             Document doc = new Document();
@@ -472,18 +494,30 @@ public class LibroDiarioForm extends javax.swing.JFrame {
                 PdfPCell ID_AC = new PdfPCell(new Phrase(""+f.getId_asiento_cuenta(),minus));
                 ID_AC.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
                 tabla.addCell(ID_AC);
+                
                 PdfPCell CUENTA_CODIGO = new PdfPCell(new Phrase(f.getCodigo_cuenta(),minus));
                 CUENTA_CODIGO.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
                 tabla.addCell(CUENTA_CODIGO);
+                
                 PdfPCell CUENTA_NOMBRE = new PdfPCell(new Phrase(f.getNombre_cuenta(),minus));
-                CUENTA_NOMBRE.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                CUENTA_NOMBRE.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
                 tabla.addCell(CUENTA_NOMBRE);
-                PdfPCell DEBE = new PdfPCell(new Phrase(""+f.getDebe(),minus));
+                
+                PdfPCell DEBE;
+                if(f.getDebe()==0.0){
+                    DEBE = new PdfPCell(new Phrase(""));
+                } else  DEBE = new PdfPCell(new Phrase(""+f.getDebe(),minus));
+                
                 DEBE.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
                 tabla.addCell(DEBE);
-                PdfPCell HABER = new PdfPCell(new Phrase(""+f.getHaber(),minus));
+                
+                PdfPCell HABER;
+                if(f.getHaber()==0.0){
+                    HABER = new PdfPCell(new Phrase(""));
+                } else HABER = new PdfPCell(new Phrase(""+f.getHaber(),minus));
                 HABER.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
                 tabla.addCell(HABER);
+                
                 PdfPCell LEYENDA = new PdfPCell(new Phrase(f.getLeyenda(),minus));
                 LEYENDA.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
                 tabla.addCell(LEYENDA);
