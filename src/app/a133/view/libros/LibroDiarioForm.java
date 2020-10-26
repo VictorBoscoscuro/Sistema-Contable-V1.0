@@ -7,6 +7,7 @@ package app.a133.view.libros;
 
 import app.a133.connection.MyConnection;
 import app.a133.model.LibroDiarioFila;
+import app.a133.view.system.SystemMainForm;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -183,7 +184,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         cuentaHR.setFont(new Font("Segoe UI",Font.BOLD,14));
         cuentaHR.setOpaque(true);
         cuentaHR.setForeground(Color.BLACK);
-        cuentaHR.setHorizontalAlignment(SwingConstants.CENTER);
+        cuentaHR.setHorizontalAlignment(SwingConstants.LEFT);
  
         DefaultTableCellRenderer cuentaCR = new DefaultTableCellRenderer();
         cuentaCR.setHorizontalAlignment(SwingConstants.LEFT);
@@ -329,6 +330,11 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         lblPeriodo.setText("año");
 
         btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         btnGenerarPDF.setText("Generar PDF");
         btnGenerarPDF.addActionListener(new java.awt.event.ActionListener() {
@@ -533,6 +539,12 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnGenerarPDFActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        SystemMainForm form = new SystemMainForm();
+        form.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
