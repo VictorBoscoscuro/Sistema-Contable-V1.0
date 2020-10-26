@@ -320,9 +320,12 @@ public class LibroDiarioForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtMovimientos.setFocusable(false);
         jtMovimientos.setRowHeight(20);
+        jtMovimientos.setRowSelectionAllowed(false);
         jtMovimientos.setSelectionBackground(new java.awt.Color(102, 255, 102));
         jtMovimientos.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jtMovimientos.setShowGrid(true);
         jScrollPane1.setViewportView(jtMovimientos);
 
         jLabel1.setText("Periodo:");

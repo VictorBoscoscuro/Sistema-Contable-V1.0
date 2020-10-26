@@ -27,7 +27,9 @@ import java.sql.ResultSetMetaData;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -50,13 +52,10 @@ public class LibroMayorForm extends javax.swing.JFrame {
     
     public LibroMayorForm(String codigoCuenta){
         initComponents();
-        
         setTitle("Libro Mayor");
         setLocationRelativeTo(null);
         this.codigoCuenta = codigoCuenta;
-        
         formatoTabla();
-        
         
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -86,7 +85,6 @@ public class LibroMayorForm extends javax.swing.JFrame {
             String sql2 = "SELECT a.id_asiento AS ID_ASIENTO, a.fecha AS FECHA, ac.debe AS DEBE, ac.haber AS HABER, ac.saldo_parcial AS SALDO_PARCIAL, a.leyenda AS LEYENDA FROM cuenta c INNER JOIN asiento_cuenta ac USING(id_cuenta) INNER JOIN asiento a USING(id_asiento) WHERE c.codigo = '"+codigoCuenta+"';";
             ps2 = con2.prepareStatement(sql2);
             rs2 = ps2.executeQuery();
-            
             ResultSetMetaData rsMD = rs2.getMetaData();
             
             DefaultTableModel model = new DefaultTableModel();
@@ -103,6 +101,15 @@ public class LibroMayorForm extends javax.swing.JFrame {
             
             formatoTabla();
             
+            Vector<String> inicial = new Vector<String>();
+            inicial.add("");
+            inicial.add("");
+            inicial.add("");
+            inicial.add("");
+            inicial.add("0");
+            inicial.add("INICIAL");
+            model.addRow(inicial);
+            
             while(rs2.next()){
                 Object[] rows = new Object[numberColumns];
                 
@@ -114,10 +121,11 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 l.setSaldoParcial(rs2.getDouble("SALDO_PARCIAL"));
                 l.setLeyenda(rs2.getString("LEYENDA"));
                 filas.add(l);
-                anioParaPeriodo = rs2.getString("FECHA").substring(0,4);
                 
-                for (int i = 0; i<numberColumns; i++) { 
-                    
+                anioParaPeriodo = rs2.getString("FECHA").substring(0,4);
+                saldoFinal = String.valueOf(rs2.getDouble("SALDO_PARCIAL"));
+                
+                for (int i = 0; i<numberColumns; i++) {
                     if(i==2){
                        if(rs2.getDouble("DEBE")==0.0){
                            rows[i] = "";
@@ -138,14 +146,22 @@ public class LibroMayorForm extends javax.swing.JFrame {
                     
                 }
                 model.addRow(rows);
-                lblPeriodo.setText(anioParaPeriodo);
-            }                    
+            } 
+            lblPeriodo.setText(anioParaPeriodo);
+            
+            Vector<String> saldoFinalLinea = new Vector<String>();
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add(saldoFinal);
+            saldoFinalLinea.add("SALDO FINAL");
+            model.addRow(saldoFinalLinea);
         } catch (Exception e) {
         } finally{
             try{rs2.close();} catch(Exception e){}
             try{ps2.close();} catch(Exception e){}
-            try{con2.close();} catch(Exception e){}
-            
+            try{con2.close();} catch(Exception e){}  
         }
         setearNombreCuenta(codigoCuenta);
     }
@@ -170,9 +186,9 @@ public class LibroMayorForm extends javax.swing.JFrame {
     
     public LibroMayorForm(String codigoCuenta,String anioDesde, String anioHasta, String mesDesde, String mesHasta, String diaDesde, String diaHasta){
         initComponents();
-        
         setTitle("Libro Mayor");
         setLocationRelativeTo(null);
+        
         this.codigoCuenta = codigoCuenta;
         this.anioDesde = anioDesde;
         this.anioHasta = anioHasta;
@@ -183,11 +199,8 @@ public class LibroMayorForm extends javax.swing.JFrame {
         
         fechaDesde = this.anioDesde+"-"+this.mesDesde+"-"+this.diaDesde;
         fechaHasta = this.anioHasta+"-"+this.mesHasta+"-"+this.diaHasta;
-        
-        
-        
+
         formatoTabla();
-        
         
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -213,11 +226,9 @@ public class LibroMayorForm extends javax.swing.JFrame {
         MyConnection mycon2 = new MyConnection();
         Connection con2 = mycon2.getMyConnection();
         try {
-            
             String sql2 = "SELECT a.id_asiento AS ID_ASIENTO, a.fecha AS FECHA, ac.debe AS DEBE, ac.haber AS HABER, ac.saldo_parcial AS SALDO_PARCIAL, a.leyenda AS LEYENDA FROM cuenta c INNER JOIN asiento_cuenta ac USING(id_cuenta) INNER JOIN asiento a USING(id_asiento) WHERE c.codigo = '"+codigoCuenta+"' AND a.fecha BETWEEN '"+fechaDesde+"' AND '"+fechaHasta+"';";
             ps2 = con2.prepareStatement(sql2);
             rs2 = ps2.executeQuery();
-            
             ResultSetMetaData rsMD = rs2.getMetaData();
             
             DefaultTableModel model = new DefaultTableModel();
@@ -234,6 +245,18 @@ public class LibroMayorForm extends javax.swing.JFrame {
             
             formatoTabla();
             
+            if(anioDesde == null){
+                Vector<String> inicial = new Vector<String>();
+                inicial.add("");
+                inicial.add("");
+                inicial.add("");
+                inicial.add("");
+                inicial.add("0");
+                inicial.add("INICIAL");
+
+                model.addRow(inicial);
+            }
+            
             while(rs2.next()){
                 Object[] rows = new Object[numberColumns];
                 
@@ -245,9 +268,9 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 l.setSaldoParcial(rs2.getDouble("SALDO_PARCIAL"));
                 l.setLeyenda(rs2.getString("LEYENDA"));
                 filas.add(l);
+                
                 anioParaPeriodo = rs2.getString("FECHA").substring(0,4);
-                
-                
+                saldoFinal = String.valueOf(rs2.getDouble("SALDO_PARCIAL"));
                 
                 for (int i = 0; i<numberColumns; i++) { 
                     
@@ -267,23 +290,27 @@ public class LibroMayorForm extends javax.swing.JFrame {
                     }
                     else{
                         rows[i] = rs2.getObject(i+1);
-                    }
-                    
+                    }   
                 }
                 model.addRow(rows);
-                
             }
-            
             lblPeriodo.setText(anioParaPeriodo);
+            
+            Vector<String> saldoFinalLinea = new Vector<String>();
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add("");
+            saldoFinalLinea.add(saldoFinal);
+            saldoFinalLinea.add("SALDO FINAL");
+            model.addRow(saldoFinalLinea);
         } catch (Exception e) {
         } finally{
             try{rs2.close();} catch(Exception e){}
             try{ps2.close();} catch(Exception e){}
             try{con2.close();} catch(Exception e){}
-            
         }
-        setearNombreCuenta(codigoCuenta);
-        
+        setearNombreCuenta(codigoCuenta); 
     }
     
     private String codigoCuenta;
@@ -305,6 +332,8 @@ public class LibroMayorForm extends javax.swing.JFrame {
     
     private String nombreCuenta;
     
+    private String saldoFinal;
+    
     
     private void formatoTabla(){
                 
@@ -320,6 +349,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
         asientoHR.setFont(new Font("Segoe UI",Font.BOLD,14));
         asientoHR.setOpaque(true);
         asientoHR.setForeground(Color.BLACK);
+        
         
         jtMovimientos.getColumnModel().getColumn(0).setHeaderRenderer(asientoHR);
         
@@ -420,6 +450,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnGenerarPDF = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -440,16 +471,6 @@ public class LibroMayorForm extends javax.swing.JFrame {
 
         jtMovimientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -480,9 +501,12 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jtMovimientos.setFocusable(false);
         jtMovimientos.setRowHeight(20);
+        jtMovimientos.setRowSelectionAllowed(false);
         jtMovimientos.setSelectionBackground(new java.awt.Color(102, 255, 102));
         jtMovimientos.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jtMovimientos.setShowGrid(false);
         jScrollPane1.setViewportView(jtMovimientos);
 
         jLabel1.setText("Periodo:");
@@ -526,17 +550,19 @@ public class LibroMayorForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
+                    .addComponent(lblCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
                         .addComponent(btnGenerarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
                         .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblCuit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -553,10 +579,11 @@ public class LibroMayorForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(lblCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 468, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVolver)
-                    .addComponent(btnGenerarPDF))
+                    .addComponent(btnGenerarPDF)
+                    .addComponent(jLabel3))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -573,7 +600,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addComponent(lblPeriodo))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(40, Short.MAX_VALUE)))
         );
 
@@ -594,7 +621,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
 
             FileOutputStream archivo;
             if(fechaDesde == null){
-                file = new File("C:\\Users\\victo\\Desktop\\Reportes\\Libros Mayores\\reporteCuenta"+lblCuenta.getText()+")_"+fechaActualString()+".pdf");
+                file = new File("C:\\Users\\victo\\Desktop\\Reportes\\Libros Mayores\\reporteCuenta("+lblCuenta.getText()+")_"+fechaActualString()+".pdf");
             } else {
                 file = new File("C:\\Users\\victo\\Desktop\\Reportes\\Libros Mayores\\reporteCuenta("+lblCuenta.getText()+")_"+fechaDesde+"_"+fechaHasta+".pdf");
             }
@@ -643,6 +670,31 @@ public class LibroMayorForm extends javax.swing.JFrame {
             titulo.add(Chunk.NEWLINE);
             titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
             doc.add(titulo);
+            
+            com.itextpdf.text.Font minusBold = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN,8,com.itextpdf.text.Font.BOLDITALIC, BaseColor.BLACK);
+
+            
+            if(anioDesde == null){
+                Paragraph fecha = new Paragraph(10);
+                
+                fecha.setFont(minusBold);
+                fecha.add("Al "+fechaActualString());
+                fecha.add(Chunk.NEWLINE);
+                fecha.add(Chunk.NEWLINE);
+                fecha.add(Chunk.NEWLINE);
+                fecha.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                doc.add(fecha);
+            } else{
+                Paragraph fecha = new Paragraph(10);
+                
+                fecha.setFont(minusBold);
+                fecha.add(fechaDesde+" al "+fechaHasta);
+                fecha.add(Chunk.NEWLINE);
+                fecha.add(Chunk.NEWLINE);
+                fecha.add(Chunk.NEWLINE);
+                fecha.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                doc.add(fecha);
+            }
 
             float[] weights = {2,3,4,4,6,15};
 
@@ -676,6 +728,27 @@ public class LibroMayorForm extends javax.swing.JFrame {
             tabla.addCell(c5);
             tabla.addCell(c6);
 
+
+            Double saldoFinal = 0.0;
+            
+            if(anioDesde == null){
+
+                PdfPCell INICIAL0 = new PdfPCell(new Phrase(""));
+                tabla.addCell(INICIAL0);
+                PdfPCell INICIAL1 = new PdfPCell(new Phrase());
+                tabla.addCell(INICIAL1);
+                PdfPCell INICIAL2 = new PdfPCell(new Phrase());
+                tabla.addCell(INICIAL2);
+                PdfPCell INICIAL3 = new PdfPCell(new Phrase());
+                tabla.addCell(INICIAL3);
+                PdfPCell INICIAL4 = new PdfPCell(new Phrase(String.valueOf("0"),minusBold));
+                INICIAL4.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+                tabla.addCell(INICIAL4);
+                PdfPCell INICIAL5 = new PdfPCell(new Phrase(String.valueOf("INICIAL"),minusBold));
+                tabla.addCell(INICIAL5);
+            }             
+            
+            
             for(LibroMayorFila f: filas){
                 PdfPCell ID_ASIENTO = new PdfPCell(new Phrase(""+f.getIdAsientoRelacionado(),minus));
                 ID_ASIENTO.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
@@ -702,16 +775,32 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 
                 PdfPCell SALDO = new PdfPCell(new Phrase(""+f.getSaldoParcial(),minus));
                 SALDO.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+                saldoFinal = f.getSaldoParcial();
                 tabla.addCell(SALDO);
 
                 PdfPCell LEYENDA = new PdfPCell(new Phrase(f.getLeyenda(),minus));
                 LEYENDA.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
                 tabla.addCell(LEYENDA);
-
             }
+            
+            PdfPCell FINAL0 = new PdfPCell(new Phrase(""));
+            tabla.addCell(FINAL0);
+            PdfPCell FINAL1 = new PdfPCell(new Phrase());
+            tabla.addCell(FINAL1);
+            PdfPCell FINAL2 = new PdfPCell(new Phrase());
+            tabla.addCell(FINAL2);
+            PdfPCell FINAL3 = new PdfPCell(new Phrase());
+            tabla.addCell(FINAL3);
+            PdfPCell FINAL4 = new PdfPCell(new Phrase(String.valueOf(String.valueOf(saldoFinal)),minusBold));
+            FINAL4.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            tabla.addCell(FINAL4);
+            PdfPCell FINAL5 = new PdfPCell(new Phrase(String.valueOf("FINAL"),minusBold));
+            tabla.addCell(FINAL5);
 
             doc.add(tabla);
 
+            
+            
             doc.close();
             archivo.close();
             Desktop.getDesktop().open(file);
@@ -726,16 +815,22 @@ public class LibroMayorForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formFocusGained
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        if(jtMovimientos.getModel().getRowCount() == 0){
+        if(anioDesde == null && jtMovimientos.getModel().getRowCount() < 3){
                 JOptionPane.showMessageDialog(null, "Ningun asiento encontrado para la fecha indicada");
-                LibroDiarioGenerarForm form = new LibroDiarioGenerarForm();
+                LibroMayorGenerarForm form = new LibroMayorGenerarForm();
+                form.setVisible(true);
+                this.dispose();
+            }
+        else if(anioDesde != null && jtMovimientos.getModel().getRowCount() < 2){
+                JOptionPane.showMessageDialog(null, "Ningun asiento encontrado para la fecha indicada");
+                LibroMayorGenerarForm form = new LibroMayorGenerarForm();
                 form.setVisible(true);
                 this.dispose();
             }
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        SystemMainForm form = new SystemMainForm();
+        LibroMayorGenerarForm form = new LibroMayorGenerarForm();
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -779,6 +874,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerarPDF;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtMovimientos;

@@ -76,7 +76,7 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         btnTodosAsientos = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnGenerarFiltrado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -147,6 +147,7 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
         jtCuentas.setRowHeight(22);
         jtCuentas.setSelectionBackground(new java.awt.Color(255, 255, 153));
         jtCuentas.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jtCuentas.setShowGrid(false);
         jtCuentas.getTableHeader().setReorderingAllowed(false);
         jtCuentas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -268,10 +269,10 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Generar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarFiltrado.setText("Generar");
+        btnGenerarFiltrado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnGenerarFiltradoActionPerformed(evt);
             }
         });
 
@@ -346,7 +347,7 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(txtDiaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(62, 62, 62)
-                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addComponent(btnGenerarFiltrado, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(159, 159, 159))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtAnioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -398,7 +399,7 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtDiaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3)))))
+                                    .addComponent(btnGenerarFiltrado)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
@@ -578,6 +579,8 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
             model.addColumn("Codigo");
             model.addColumn("Nombre");
             model.addColumn("Tipo");
+            
+            
 
             formatoTabla();
 
@@ -742,11 +745,23 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        LibroMayorForm form = new LibroMayorForm(txtCodigoGenerar.getText(),txtAnioInicial.getText(),txtAnioFinal.getText(),txtMesInicial.getText(),txtMesFinal.getText(),txtDiaInicial.getText(), txtDiaFinal.getText());
-        form.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnGenerarFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFiltradoActionPerformed
+
+        if(!"".equals(txtAnioInicial.getText()) && !"".equals(txtAnioFinal.getText()) && !"".equals(txtMesInicial.getText()) && !"".equals(txtMesFinal.getText()) && !"".equals(txtDiaInicial.getText()) && !"".equals(txtDiaFinal.getText())){
+            LibroMayorForm form = new LibroMayorForm(txtCodigoGenerar.getText(),txtAnioInicial.getText(),txtAnioFinal.getText(),txtMesInicial.getText(),txtMesFinal.getText(),txtDiaInicial.getText(), txtDiaFinal.getText());
+            form.setVisible(true);
+            this.dispose();
+        } else{
+            JOptionPane.showMessageDialog(null, "Complete los datos correctamente");
+            txtAnioFinal.setText(null);
+            txtAnioInicial.setText(null);
+            txtMesFinal.setText(null);
+            txtMesInicial.setText(null);
+            txtDiaFinal.setText(null);
+            txtDiaInicial.setText(null);
+        }
+        
+    }//GEN-LAST:event_btnGenerarFiltradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -788,10 +803,10 @@ public class LibroMayorGenerarForm extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarCodigo;
     private javax.swing.JButton btnBuscarNombre;
     private javax.swing.JButton btnCopiarCodigo;
+    private javax.swing.JButton btnGenerarFiltrado;
     private javax.swing.JButton btnTodosAsientos;
     private javax.swing.JButton btnVerTodas;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

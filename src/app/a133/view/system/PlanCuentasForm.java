@@ -82,6 +82,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,6 +194,13 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("PLAN DE CUENTAS");
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -236,7 +244,9 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(124, 124, 124))))
+                                .addGap(44, 44, 44)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -277,9 +287,12 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                     .addComponent(btnModificarCuenta)
                     .addComponent(btnNuevaCuenta))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVolver, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(15, 15, 15))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,6 +412,32 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
                 sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE tipo_cuenta = '"+tipo+"' AND nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                ResultSetMetaData rsMD = rs.getMetaData();     
+                int numberColumns = rsMD.getColumnCount();
+            
+                model.addColumn("Codigo");
+                model.addColumn("Nombre");
+                model.addColumn("Tipo");
+                model.addColumn("Recibe");
+            
+                formatoTabla();
+            
+                while(rs.next()){
+                    Object[] rows = new Object[numberColumns];
+                    for (int i = 0; i<numberColumns; i++) {
+                    rows[i] = rs.getObject(i+1);
+                    }
+                model.addRow(rows);
+                }
+                
+                vaciarCamposBusqueda(); 
+            } else if("".equals(codigo) && !"".equals(nombre) &&  "Seleccione el tipo de cuenta".equals(tipo)){
+               jtPlanCuentas.setVisible(true);
+                DefaultTableModel model = new DefaultTableModel();
+                jtPlanCuentas.setModel(model);
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -585,6 +624,12 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        SystemMainForm form = new SystemMainForm();
+        form.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -624,6 +669,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarCuenta;
     private javax.swing.JButton btnModificarCuenta;
     private javax.swing.JButton btnNuevaCuenta;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<String> cbxBuscarTipo;
     private javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JCheckBox chkRecibeSaldo;
