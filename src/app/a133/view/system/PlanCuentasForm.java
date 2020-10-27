@@ -30,7 +30,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
     }
 
     private void formatoTabla(){
-        int[] weights = {20,140,120,15};
+        int[] weights = {20,140,120,10,10};
             
         for(int i = 0; i < jtPlanCuentas.getColumnCount(); i++){
             jtPlanCuentas.getColumnModel().getColumn(i).setPreferredWidth(weights[i]);
@@ -83,35 +83,37 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
+        btnDesHab = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jtPlanCuentas.setBackground(new java.awt.Color(231, 76, 60));
         jtPlanCuentas.setForeground(new java.awt.Color(0, 0, 0));
         jtPlanCuentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Tipo", "Recibe"
+                "Codigo", "Nombre", "Tipo", "Recibe", "Habilitada"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -126,6 +128,11 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         jtPlanCuentas.setRowHeight(25);
         jtPlanCuentas.setSelectionBackground(new java.awt.Color(205, 97, 85));
         jtPlanCuentas.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jtPlanCuentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtPlanCuentasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtPlanCuentas);
 
         jLabel1.setText("Codigo");
@@ -201,14 +208,21 @@ public class PlanCuentasForm extends javax.swing.JFrame {
             }
         });
 
+        btnDesHab.setText("Deshab/Habil");
+        btnDesHab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesHabActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel7)
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,43 +239,40 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cbxBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(cbxBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnDesHab, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(chkRecibeSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnModificarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(56, 56, 56)
-                                .addComponent(btnNuevaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(56, 56, 56))
+                                .addComponent(btnModificarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(btnNuevaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(16, 16, 16)
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(44, 44, 44)
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(chkRecibeSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbxTipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(44, 44, 44)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,10 +293,11 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                     .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(chkRecibeSaldo)
-                .addGap(34, 34, 34)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNuevaCuenta)
                     .addComponent(btnModificarCuenta)
-                    .addComponent(btnNuevaCuenta))
+                    .addComponent(btnDesHab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -310,10 +322,10 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3)
                                 .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -335,7 +347,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 jtPlanCuentas.setVisible(true);
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
-                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta ORDER BY codigo;";
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo,habilitada FROM cuenta ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -345,6 +357,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 model.addColumn("Nombre");
                 model.addColumn("Tipo");
                 model.addColumn("Recibe");
+                model.addColumn("Habilitada");
             
                 formatoTabla();
             
@@ -359,7 +372,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 jtPlanCuentas.setVisible(true);
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
-                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE codigo LIKE '"+codigo+"%' ORDER BY codigo;";
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo, habilitada FROM cuenta WHERE codigo LIKE '"+codigo+"%' ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -369,6 +382,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 model.addColumn("Nombre");
                 model.addColumn("Tipo");
                 model.addColumn("Recibe");
+                model.addColumn("Habilitada");
             
                 formatoTabla();
             
@@ -385,7 +399,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                jtPlanCuentas.setVisible(true);
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
-                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE tipo_cuenta = '"+tipo+"' ORDER BY codigo;";
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo, habilitada FROM cuenta WHERE tipo_cuenta = '"+tipo+"' ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -395,6 +409,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 model.addColumn("Nombre");
                 model.addColumn("Tipo");
                 model.addColumn("Recibe");
+                model.addColumn("Habilitada");
             
                 formatoTabla();
             
@@ -411,7 +426,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                jtPlanCuentas.setVisible(true);
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
-                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE tipo_cuenta = '"+tipo+"' AND nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo, habilitada FROM cuenta WHERE tipo_cuenta = '"+tipo+"' AND nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -421,6 +436,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 model.addColumn("Nombre");
                 model.addColumn("Tipo");
                 model.addColumn("Recibe");
+                model.addColumn("Habilitada");
             
                 formatoTabla();
             
@@ -437,7 +453,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                jtPlanCuentas.setVisible(true);
                 DefaultTableModel model = new DefaultTableModel();
                 jtPlanCuentas.setModel(model);
-                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo FROM cuenta WHERE nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
+                sql = "SELECT codigo, nombre, tipo_cuenta, recibe_saldo, habilitada FROM cuenta WHERE nombre LIKE '%"+nombre+"%' ORDER BY codigo;";
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ResultSetMetaData rsMD = rs.getMetaData();     
@@ -447,6 +463,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
                 model.addColumn("Nombre");
                 model.addColumn("Tipo");
                 model.addColumn("Recibe");
+                model.addColumn("Habilitada");
             
                 formatoTabla();
             
@@ -630,6 +647,97 @@ public class PlanCuentasForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    private void jtPlanCuentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtPlanCuentasMouseClicked
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection conn = mycon.getMyConnection();
+        
+        try {
+            int FILA = jtPlanCuentas.getSelectedRow();
+            txtCodigo.setText(jtPlanCuentas.getValueAt(FILA, 0).toString());
+            txtNombre.setText(jtPlanCuentas.getValueAt(FILA, 1).toString());
+            cbxTipo.setSelectedItem(jtPlanCuentas.getValueAt(FILA, 2).toString());
+            if(Boolean.parseBoolean(jtPlanCuentas.getValueAt(FILA, 3).toString()) == true){
+                chkRecibeSaldo.setSelected(true);
+            }
+            
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error al traer los datos!");
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                conn.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_jtPlanCuentasMouseClicked
+
+    private void btnDesHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesHabActionPerformed
+        PreparedStatement ps = null;
+        MyConnection mycon = new MyConnection();
+        ResultSet rs = null;
+        Connection conn = mycon.getMyConnection();
+        PreparedStatement ps2 = null;
+        MyConnection mycon2 = new MyConnection();
+        Connection conn2 = mycon.getMyConnection();
+        try {
+            String sql = "SELECT habilitada,nombre FROM cuenta WHERE codigo ='"+txtCodigo.getText()+"';";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getBoolean("habilitada")){
+                    int opcion = JOptionPane.showConfirmDialog(null,"Desea deshabilitarla?", "La cuenta "+rs.getString("nombre")+" esta habilitada",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(opcion == JOptionPane.YES_OPTION){
+                        String sql2 = "UPDATE cuenta SET habilitada = false WHERE codigo ='"+txtCodigo.getText()+"';";
+                        ps2 = conn2.prepareStatement(sql2);
+                        ps2.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" fue deshabilitada");
+                    } else if (opcion == JOptionPane.NO_OPTION){
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no sufrió cambios");
+                    } else if (opcion == JOptionPane.CANCEL_OPTION){
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no sufrió cambios");
+                    }
+                } else{
+                    int opcion = JOptionPane.showConfirmDialog(null,"Desea habilitarla?", "La cuenta "+rs.getString("nombre")+" esta deshabilitada",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(opcion == JOptionPane.YES_OPTION){
+                        String sql2 = "UPDATE cuenta SET habilitada = true WHERE codigo ='"+txtCodigo.getText()+"';";
+                        ps2 = conn2.prepareStatement(sql2);
+                        ps2.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" fue habilitada");
+                    } else if (opcion == JOptionPane.NO_OPTION){
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no sufrió cambios");
+                    } else if (opcion == JOptionPane.CANCEL_OPTION){
+                        JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no sufrió cambios");
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+        } finally{
+            try {
+                rs.close();
+            } catch (Exception e) {}
+            try {
+                ps.close();
+            } catch (Exception e) {}
+            try {
+                conn.close();
+            } catch (Exception e) {}
+            try {
+                ps2.close();
+            } catch (Exception e) {}
+            try {
+                conn2.close();
+            } catch (Exception e) {}
+        }
+    }//GEN-LAST:event_btnDesHabActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -667,6 +775,7 @@ public class PlanCuentasForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarCuenta;
+    private javax.swing.JButton btnDesHab;
     private javax.swing.JButton btnModificarCuenta;
     private javax.swing.JButton btnNuevaCuenta;
     private javax.swing.JButton btnVolver;

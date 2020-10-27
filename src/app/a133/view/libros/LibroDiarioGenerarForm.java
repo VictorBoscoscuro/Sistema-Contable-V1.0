@@ -270,7 +270,7 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMesFocusLost
 
     private void txtDiaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDiaFocusLost
-        Integer dia = Integer.parseInt(txtMes.getText());
+        Integer dia = Integer.parseInt(txtDia.getText());
         if(txtDia.getText().length() == 2){
             if(dia < 1 || dia > 31){
                 JOptionPane.showMessageDialog(null, "Que calendario raro manejas... Dale hacé las cosas bien.");

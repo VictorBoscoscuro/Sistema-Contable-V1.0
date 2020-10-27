@@ -26,8 +26,10 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -183,6 +185,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        txtCuenta1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta1FocusLost(evt);
+            }
+        });
         txtCuenta1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta1KeyTyped(evt);
@@ -209,6 +216,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        txtCuenta4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta4FocusLost(evt);
+            }
+        });
         txtCuenta4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta4KeyTyped(evt);
@@ -222,6 +234,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        txtCuenta5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta5FocusLost(evt);
+            }
+        });
         txtCuenta5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta5KeyTyped(evt);
@@ -253,6 +270,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         Haber.setText("Haber");
         Haber.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        txtCuenta3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta3FocusLost(evt);
+            }
+        });
         txtCuenta3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta3KeyTyped(evt);
@@ -301,6 +323,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        txtCuenta7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta7FocusLost(evt);
+            }
+        });
         txtCuenta7.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta7KeyTyped(evt);
@@ -340,12 +367,22 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         jLabel4.setText("Debe");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        txtCuenta2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta2FocusLost(evt);
+            }
+        });
         txtCuenta2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta2KeyTyped(evt);
             }
         });
 
+        txtCuenta8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta8FocusLost(evt);
+            }
+        });
         txtCuenta8.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta8KeyTyped(evt);
@@ -359,6 +396,11 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
         });
 
+        txtCuenta6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCuenta6FocusLost(evt);
+            }
+        });
         txtCuenta6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuenta6KeyTyped(evt);
@@ -807,7 +849,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
         if(c == 46 && txtDebe1.getText().indexOf(".") > -1){
             evt.consume();
             Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
+            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
             txtDebe1.setText("");
         }
         
@@ -1461,55 +1503,57 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             ps.setLong(1, idCuenta);
             
             rs = ps.executeQuery();
-            
 
-            
             if(rs.next()){
                 if(rs.getBoolean("recibe_saldo")){
-                    switch(rs.getString("tipo_cuenta")){
-                        case "ACTIVO":
-                            if((rs.getDouble("saldo_actual")-haber)>=0.0){
-                                valida = true;
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                                break;
-                            }
-                        case "PASIVO":
-                            if((rs.getDouble("saldo_actual")-debe)>=0.0){
-                                valida = true;
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                                break;
-                            }
-                        case "PATRIMONIO":
-                            if((rs.getDouble("saldo_actual")-debe)>=0.0){
-                                valida = true;
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
-                                break;
-                            }
-                        case "RESULTADO_NEGATIVO":
-                            if(debe > 0.0){
-                                valida = true;
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Los resultados negativos van por el debe padre...");
-                                break;
-                            }
-                        case "RESULTADO_POSITIVO":
-                            if(haber > 0.0){
-                                valida = true;
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Los resultados positivos van por el haber padre");
-                                break;
-                            }
+                    if(rs.getBoolean("habilitada")){
+                        switch(rs.getString("tipo_cuenta")){
+                            case "ACTIVO":
+                                if((rs.getDouble("saldo_actual")-haber)>=0.0){
+                                    valida = true;
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                    break;
+                                }
+                            case "PASIVO":
+                                if((rs.getDouble("saldo_actual")-debe)>=0.0){
+                                    valida = true;
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                    break;
+                                }
+                            case "PATRIMONIO":
+                                if((rs.getDouble("saldo_actual")-debe)>=0.0){
+                                    valida = true;
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+ " no puede quedar en negativo");
+                                    break;
+                                }
+                            case "RESULTADO_NEGATIVO":
+                                if(debe > 0.0){
+                                    valida = true;
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Los resultados negativos van por el debe padre...");
+                                    break;
+                                }
+                            case "RESULTADO_POSITIVO":
+                                if(haber > 0.0){
+                                    valida = true;
+                                    break;
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Los resultados positivos van por el haber padre");
+                                    break;
+                                }
                         }
+                    } else JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" esta deshabilitada!");
+                    
                 } else JOptionPane.showMessageDialog(null, "La cuenta "+rs.getString("nombre")+" no puede recibir saldo!");
-            }
+            } 
+            
         }catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Codigo de cuenta inexistente ingresado "+e.getMessage());
         } finally{
@@ -1526,9 +1570,50 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             }
             
     }
+ 
+    private boolean verificarCodigosCuentasRepetidos(){ //Retorna false si hay codigos de cuenta repetidos
+        Set<String> hash_Set = new HashSet<String>();
+        int cantidad_codigos = 0;
+        if(txtCuenta1.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta1.getText());
+        }
+        if(txtCuenta2.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta2.getText());
+        }
+        if(txtCuenta3.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta3.getText());
+        }
+        if(txtCuenta4.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta4.getText());
+        }
+        if(txtCuenta5.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta5.getText());
+        }
+        if(txtCuenta6.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta6.getText());
+        }
+        if(txtCuenta7.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta7.getText());
+        }
+        if(txtCuenta8.getText().length() > 0){
+            cantidad_codigos++;
+            hash_Set.add(txtCuenta8.getText());
+        }
+        if(hash_Set.size() == cantidad_codigos){
+            return true;
+        } else return false;
+    }
     
     private void btnIngresarAsientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarAsientosActionPerformed
-        
+
+        if(verificarCodigosCuentasRepetidos()){
         asignarValoresMatriz();
         movimientosValidosLista();
         if(listaValidos.size()>0){      //Primero reviso que haya algun asiento valido a insertar
@@ -1618,26 +1703,38 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             
         } else {
             int opcion = JOptionPane.showConfirmDialog(null,"Desea reiniciar los datos?", "Ningun movimiento es válido",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if(opcion == JOptionPane.YES_OPTION){
-                    restaurarMatriz();
-                    vaciarTodosCampos();
-                    listaValidos = new ArrayList<Asiento_Cuenta>();
-                    movimientosValidosLista();
-                } else if (opcion == JOptionPane.NO_OPTION){
-                    restaurarMatriz();
-                    listaValidos = new ArrayList<Asiento_Cuenta>();
-                    movimientosValidosLista();
-                } else if (opcion == JOptionPane.CANCEL_OPTION){
-                    restaurarMatriz();
-                    listaValidos = new ArrayList<Asiento_Cuenta>();
-                    movimientosValidosLista();
+            if(opcion == JOptionPane.YES_OPTION){
+                restaurarMatriz();
+                vaciarTodosCampos();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
+            } else if (opcion == JOptionPane.NO_OPTION){
+                restaurarMatriz();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
+            } else if (opcion == JOptionPane.CANCEL_OPTION){
+                restaurarMatriz();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
                 }
-            
-            
-        }
-        
-       
-        
+            }
+        } else {
+            int opcion = JOptionPane.showConfirmDialog(null,"Desea reiniciar los datos?", "Hay cuentas repetidas!!",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(opcion == JOptionPane.YES_OPTION){
+                restaurarMatriz();
+                vaciarTodosCampos();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
+            } else if (opcion == JOptionPane.NO_OPTION){
+                restaurarMatriz();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
+            } else if (opcion == JOptionPane.CANCEL_OPTION){
+                restaurarMatriz();
+                listaValidos = new ArrayList<Asiento_Cuenta>();
+                movimientosValidosLista();
+                }
+            }
     }//GEN-LAST:event_btnIngresarAsientosActionPerformed
 
     private void txtDebe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDebe1ActionPerformed
@@ -1930,123 +2027,139 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
     }//GEN-LAST:event_txtHaber8KeyTyped
 
     private void txtCuenta1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta1KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta1.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta1.setText(getPortapapeles());
+                txtCuenta1.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta1.setText(getPortapapeles());
-            txtCuenta1.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta1KeyTyped
 
     private void txtCuenta2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta2KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta2.getText().length() < 5){    
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta2.setText(getPortapapeles());
+                txtCuenta2.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta2.setText(getPortapapeles());
-            txtCuenta2.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta2KeyTyped
 
     private void txtCuenta3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta3KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta3.getText().length() < 5){    
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta3.setText(getPortapapeles());
+                txtCuenta3.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta3.setText(getPortapapeles());
-            txtCuenta3.transferFocus();
-        } 
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta3KeyTyped
 
     private void txtCuenta4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta4KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta4.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta4.setText(getPortapapeles());
+                txtCuenta4.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta4.setText(getPortapapeles());
-            txtCuenta4.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta4KeyTyped
 
     private void txtCuenta5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta5KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta5.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta5.setText(getPortapapeles());
+                txtCuenta5.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta5.setText(getPortapapeles());
-            txtCuenta5.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta5KeyTyped
 
     private void txtCuenta6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta6KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta6.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta6.setText(getPortapapeles());
+                txtCuenta6.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta6.setText(getPortapapeles());
-            txtCuenta6.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta6KeyTyped
 
     private void txtCuenta7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta7KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta7.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta7.setText(getPortapapeles());
+                txtCuenta7.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta7.setText(getPortapapeles());
-            txtCuenta7.transferFocus();
         }
     }//GEN-LAST:event_txtCuenta7KeyTyped
 
     private void txtCuenta8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta8KeyTyped
-        if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
-            if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+        if(txtCuenta8.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != 32){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+
+                }
+            } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
                 evt.consume();
-                Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numeros");
-                
+                txtCuenta8.setText(getPortapapeles());
+                txtCuenta8.transferFocus();
             }
-        } else if (evt.getKeyChar() == 32){         //CON SPACE CAMBIO EL FOCUS
-            evt.consume();
-            txtCuenta8.setText(getPortapapeles());
-            txtCuenta8.transferFocus();
-        }
+        } else evt.consume();
     }//GEN-LAST:event_txtCuenta8KeyTyped
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -2167,6 +2280,294 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             JOptionPane.showMessageDialog(null, "Seleccione una cuenta");
         }          
     }//GEN-LAST:event_btnCopiarCodigoPortapapelesActionPerformed
+
+    private void txtCuenta1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta1FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta1.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta1.setText(null);
+                    txtCuenta1.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        } 
+    }//GEN-LAST:event_txtCuenta1FocusLost
+
+    private void txtCuenta2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta2FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta2.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else {
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta2.setText(null);
+                    txtCuenta2.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        } 
+    }//GEN-LAST:event_txtCuenta2FocusLost
+
+    private void txtCuenta3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta3FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta3.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta3.setText(null);
+                    txtCuenta3.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta3FocusLost
+
+    private void txtCuenta4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta4FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta4.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta4.setText(null);
+                    txtCuenta4.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta4FocusLost
+
+    private void txtCuenta5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta5FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta5.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta5.setText(null);
+                    txtCuenta5.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta5FocusLost
+
+    private void txtCuenta6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta6FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta6.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta6.setText(null);
+                    txtCuenta6.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta6FocusLost
+
+    private void txtCuenta7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta7FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta7.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta7.setText(null);
+                    txtCuenta7.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta7FocusLost
+
+    private void txtCuenta8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuenta8FocusLost
+        String sql="";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String codigo = "";
+            codigo = txtCuenta8.getText();
+            if(codigo.length() > 0){
+                sql = "SELECT nombre FROM cuenta WHERE codigo ='"+codigo+"';";
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    JOptionPane.showMessageDialog(null, "Cuenta seleccionada: "+rs.getString("nombre"));
+                } else{
+                    JOptionPane.showMessageDialog(null, "El codigo "+codigo+" no pertenece a ninguna cuenta");
+                    txtCuenta8.setText(null);
+                    txtCuenta8.requestFocus();
+                }
+            
+            }
+        } catch (Exception e) {
+        } finally{
+            try{
+                rs.close();
+            } catch(Exception e){}
+            try{
+                ps.close();
+            } catch(Exception e){}
+            try{
+                con.close();
+            } catch (Exception e ) {}
+        }
+    }//GEN-LAST:event_txtCuenta8FocusLost
 
         public static void main(String args[]) {
         /* Set the Nimbus look and feel */

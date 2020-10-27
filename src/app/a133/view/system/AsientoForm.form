@@ -333,6 +333,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta1">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta1FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta1KeyTyped"/>
           </Events>
         </Component>
@@ -349,6 +350,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta4">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta4FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta4KeyTyped"/>
           </Events>
         </Component>
@@ -362,6 +364,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta5">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta5FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta5KeyTyped"/>
           </Events>
         </Component>
@@ -402,6 +405,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta3">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta3FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta3KeyTyped"/>
           </Events>
         </Component>
@@ -455,6 +459,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta7">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta7FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta7KeyTyped"/>
           </Events>
         </Component>
@@ -515,11 +520,13 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta2">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta2FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta2KeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta8">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta8FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta8KeyTyped"/>
           </Events>
         </Component>
@@ -533,6 +540,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtCuenta6">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtCuenta6FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCuenta6KeyTyped"/>
           </Events>
         </Component>
