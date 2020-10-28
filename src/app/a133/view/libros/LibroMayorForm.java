@@ -6,7 +6,6 @@
 package app.a133.view.libros;
 import app.a133.connection.MyConnection;
 import app.a133.model.LibroMayorFila;
-import app.a133.view.system.SystemMainForm;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -27,7 +26,6 @@ import java.sql.ResultSetMetaData;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -62,13 +60,15 @@ public class LibroMayorForm extends javax.swing.JFrame {
         MyConnection mycon = new MyConnection();
         Connection con = mycon.getMyConnection();
         try {
-            String sql = "SELECT razon_social,cuit,domicilio_fiscal FROM empresa WHERE id_empresa = 1;";
+            String sql = "SELECT razon_social,cuit,domicilio_fiscal,telefono,mail FROM empresa WHERE id_empresa = 1;";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if(rs.next()){
                 lblNombre.setText(rs.getString("razon_social"));
                 lblCuit.setText("CUIT: "+rs.getString("cuit").substring(0, 2)+"-"+rs.getString("cuit").substring(2, 10)+"-"+rs.getString("cuit").substring(10));
                 lblDireccion.setText("Dirección: "+rs.getString("domicilio_fiscal"));
+                lblTelefono.setText("Telefono: "+rs.getString("telefono"));
+                lblMail.setText("Mail: "+rs.getString("mail"));
             } 
         } catch (Exception e) {
         } finally{
@@ -207,13 +207,15 @@ public class LibroMayorForm extends javax.swing.JFrame {
         MyConnection mycon = new MyConnection();
         Connection con = mycon.getMyConnection();
         try {
-            String sql = "SELECT razon_social,cuit,domicilio_fiscal FROM empresa WHERE id_empresa = 1;";
+            String sql = "SELECT razon_social,cuit,domicilio_fiscal,telefono,mail FROM empresa WHERE id_empresa = 1;";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if(rs.next()){
                 lblNombre.setText(rs.getString("razon_social"));
                 lblCuit.setText("CUIT: "+rs.getString("cuit").substring(0, 2)+"-"+rs.getString("cuit").substring(2, 10)+"-"+rs.getString("cuit").substring(10));
                 lblDireccion.setText("Dirección: "+rs.getString("domicilio_fiscal"));
+                lblTelefono.setText("Telefono: "+rs.getString("telefono"));
+                lblMail.setText("Mail: "+rs.getString("mail"));
             } 
         } catch (Exception e) {
         } finally{
@@ -451,6 +453,8 @@ public class LibroMayorForm extends javax.swing.JFrame {
         btnGenerarPDF = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        lblTelefono = new javax.swing.JLabel();
+        lblMail = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -543,10 +547,20 @@ public class LibroMayorForm extends javax.swing.JFrame {
             }
         });
 
+        lblTelefono.setText("telefono");
+
+        lblMail.setText("mail");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,7 +570,9 @@ public class LibroMayorForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(62, 62, 62)
-                        .addComponent(btnGenerarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnGenerarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -566,12 +582,7 @@ public class LibroMayorForm extends javax.swing.JFrame {
                         .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblCuit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -579,7 +590,15 @@ public class LibroMayorForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(lblCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTelefono)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMail)
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblPeriodo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVolver)
                     .addComponent(btnGenerarPDF)
@@ -595,12 +614,8 @@ public class LibroMayorForm extends javax.swing.JFrame {
                     .addComponent(lblDireccion)
                     .addGap(18, 18, 18)
                     .addComponent(jLabel4)
-                    .addGap(38, 38, 38)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(lblPeriodo))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(97, 97, 97)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(40, Short.MAX_VALUE)))
         );
 
@@ -647,26 +662,34 @@ public class LibroMayorForm extends javax.swing.JFrame {
             com.itextpdf.text.Font negrita2 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN,12,com.itextpdf.text.Font.BOLD, BaseColor.BLACK);
             cuit.setFont(negrita2);
             cuit.add(lblCuit.getText());
+            cuit.add(Chunk.NEWLINE);
             cuit.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
 
             doc.add(cuit);
 
-            Paragraph periodo = new Paragraph(10);
             com.itextpdf.text.Font minus = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN,8,com.itextpdf.text.Font.ITALIC, BaseColor.BLACK);
-            periodo.setFont(minus);
-            periodo.add("Periodo: "+lblPeriodo.getText());
-            periodo.add(Chunk.NEWLINE);
-            periodo.add(Chunk.NEWLINE);
-            periodo.add(Chunk.NEWLINE);
-            periodo.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-            doc.add(periodo);
+
+            
+            Paragraph telefono = new Paragraph(8);
+            telefono.setFont(minus);
+            telefono.add(lblTelefono.getText());
+            telefono.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            doc.add(telefono);
+            
+            Paragraph mail = new Paragraph(8);
+            mail.setFont(minus);
+            mail.add(lblMail.getText());
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            doc.add(mail);
 
             Paragraph titulo = new Paragraph(10);
             com.itextpdf.text.Font courier = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER,16,com.itextpdf.text.Font.BOLDITALIC, BaseColor.BLACK);
             titulo.setFont(courier);
             titulo.add("LIBRO MAYOR - "+lblCuenta.getText());
-            titulo.add(Chunk.NEWLINE);
-            titulo.add(Chunk.NEWLINE);
             titulo.add(Chunk.NEWLINE);
             titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
             doc.add(titulo);
@@ -679,9 +702,6 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 
                 fecha.setFont(minusBold);
                 fecha.add("Al "+fechaActualString());
-                fecha.add(Chunk.NEWLINE);
-                fecha.add(Chunk.NEWLINE);
-                fecha.add(Chunk.NEWLINE);
                 fecha.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
                 doc.add(fecha);
             } else{
@@ -689,12 +709,18 @@ public class LibroMayorForm extends javax.swing.JFrame {
                 
                 fecha.setFont(minusBold);
                 fecha.add(fechaDesde+" al "+fechaHasta);
-                fecha.add(Chunk.NEWLINE);
-                fecha.add(Chunk.NEWLINE);
-                fecha.add(Chunk.NEWLINE);
                 fecha.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
                 doc.add(fecha);
             }
+            
+            Paragraph periodo = new Paragraph(10);
+            periodo.setFont(minus);
+            periodo.add("Periodo: "+lblPeriodo.getText());
+            periodo.add(Chunk.NEWLINE);
+            periodo.add(Chunk.NEWLINE);
+            periodo.add(Chunk.NEWLINE);
+            periodo.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            doc.add(periodo);
 
             float[] weights = {2,3,4,4,6,15};
 
@@ -881,7 +907,9 @@ public class LibroMayorForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblCuenta;
     private javax.swing.JLabel lblCuit;
     private javax.swing.JLabel lblDireccion;
+    private javax.swing.JLabel lblMail;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPeriodo;
+    private javax.swing.JLabel lblTelefono;
     // End of variables declaration//GEN-END:variables
 }

@@ -843,23 +843,22 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
     }//GEN-LAST:event_btnBuscarCodigoActionPerformed
 
     private void txtDebe1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe1KeyTyped
-        
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe1.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
-            txtDebe1.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe1.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe1.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe1.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe1KeyTyped
 
     
@@ -1646,9 +1645,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                     ps.setDate(2,asiento.getFecha());
                     ps.setString(3, txtLeyenda1.getText());
                     ps.executeUpdate();
-                
-                    
-                    
+                         
                     sql = "INSERT INTO asiento_cuenta(id_cuenta,id_asiento,saldo_parcial,debe,haber) VALUES(?,?,?,?,?);";
 
                     ps = con.prepareStatement(sql);
@@ -1668,8 +1665,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                         ps.setLong(2, ac.getId_cuenta());
                         ps.executeUpdate();
                     }
-                    
-                    
+
                     con.commit();
                     JOptionPane.showMessageDialog(null, "Insercion exitosa");
                     reiniciarForm();
@@ -1698,9 +1694,7 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
                         restaurarMatriz();  
                         listaValidos = new ArrayList<Asiento_Cuenta>();
                     }
-                }
-            
-            
+                }          
         } else {
             int opcion = JOptionPane.showConfirmDialog(null,"Desea reiniciar los datos?", "Ningun movimiento es válido",  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if(opcion == JOptionPane.YES_OPTION){
@@ -1742,288 +1736,288 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
     }//GEN-LAST:event_txtDebe1ActionPerformed
 
     private void txtHaber1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber1KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber1.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe1.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber1.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber1.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber1.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber1KeyTyped
 
     private void txtDebe2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe2KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe2.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe1.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe2.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe2.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe2.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe2KeyTyped
 
     private void txtHaber2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber2KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber2.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber2.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber2.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber2.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber2.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber2KeyTyped
 
     private void txtDebe3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe3KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe3.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe1.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe3.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe3.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe3.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe3KeyTyped
 
     private void txtHaber3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber3KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber3.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe1.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber3.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber3.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber3.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber3KeyTyped
 
     private void txtDebe4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe4KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe4.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe4.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe4.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe4.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe4.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe4KeyTyped
 
     private void txtHaber4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber4KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber4.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber4.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber4.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber4.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber4.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber4KeyTyped
 
     private void txtDebe5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe5KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe5.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe5.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe5.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe5.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe5.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe5KeyTyped
 
     private void txtHaber5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber5KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber5.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber5.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber5.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber5.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber5.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber5KeyTyped
 
     private void txtDebe6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe6KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe6.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe6.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe6.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe6.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe6.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe6KeyTyped
 
     private void txtHaber6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber6KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber6.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber6.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber6.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber6.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber6.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber6KeyTyped
 
     private void txtDebe7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe7KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe7.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe7.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe7.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe7.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe7.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe7KeyTyped
 
     private void txtHaber7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber7KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber7.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber7.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber7.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber7.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber7.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber7KeyTyped
 
     private void txtDebe8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebe8KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtDebe8.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtDebe8.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtDebe8.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtDebe8.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtDebe8.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtDebe8KeyTyped
 
     private void txtHaber8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHaber8KeyTyped
-        int c = evt.getKeyChar();
-        
-        if(c == 46 && txtHaber8.getText().indexOf(".") > -1){
-            evt.consume();
-            Toolkit.getDefaultToolkit().beep();
-            JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner pa?");
-            txtHaber8.setText("");
-        }
-        
-        if(c != 127 && c != 8 && c != 46){
-            if(c < 48 || c > 57  ){
+        if(txtHaber8.getText().length() < 15){
+            int c = evt.getKeyChar();
+            if(c == 46 && txtHaber8.getText().indexOf(".") > -1){
                 evt.consume();
                 Toolkit.getDefaultToolkit().beep();
-                JOptionPane.showMessageDialog(null, "Solo numero y puntos");
-            }  
-        }
+                JOptionPane.showMessageDialog(null, "Cuantos puntos queres poner padre?");
+                txtHaber8.setText("");
+            }
+            if(c != 127 && c != 8 && c != 46){
+                if(c < 48 || c > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numero y puntos");
+                }  
+            }
+        } else evt.consume();
     }//GEN-LAST:event_txtHaber8KeyTyped
 
     private void txtCuenta1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuenta1KeyTyped

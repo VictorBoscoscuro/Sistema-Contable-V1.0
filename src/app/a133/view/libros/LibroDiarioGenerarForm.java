@@ -19,6 +19,7 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
     public LibroDiarioGenerarForm() {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Generar Libro Diario");
     }
     
 
@@ -248,40 +249,48 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Integer anioActual  = localDate.getYear();
         if(anio < 1950 || anio > anioActual){
-            JOptionPane.showMessageDialog(null, "Ingrese un año válido...");
+            JOptionPane.showMessageDialog(null, "Ingrese un año válido...");   
             txtAnio.setText(null);
-            txtAnio.requestFocus();
         }
     }//GEN-LAST:event_txtAnioFocusLost
 
     private void txtMesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMesFocusLost
-        Integer mes = Integer.parseInt(txtMes.getText());
-        if(txtMes.getText().length() == 2){
+        try {
+            Integer mes = Integer.parseInt(txtMes.getText());
+            if(txtMes.getText().length() == 2){
             if(mes < 1 || mes > 12){
                 JOptionPane.showMessageDialog(null, "Que calendario raro manejas... Dale hacé las cosas bien.");
                 txtMes.setText(null);
-                txtMes.requestFocus();
             }
         } else{
             JOptionPane.showMessageDialog(null, "Recuerde que el formato es MM (2 digitos)");
             txtMes.setText(null);
             txtMes.requestFocus();
         }
+        } catch (Exception e) {
+            txtAnio.requestFocus();
+        }
+
     }//GEN-LAST:event_txtMesFocusLost
 
     private void txtDiaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDiaFocusLost
-        Integer dia = Integer.parseInt(txtDia.getText());
-        if(txtDia.getText().length() == 2){
-            if(dia < 1 || dia > 31){
-                JOptionPane.showMessageDialog(null, "Que calendario raro manejas... Dale hacé las cosas bien.");
+        try {
+            Integer dia = Integer.parseInt(txtDia.getText());
+            if(txtDia.getText().length() == 2){
+                if(dia < 1 || dia > 31){
+                    JOptionPane.showMessageDialog(null, "Que calendario raro manejas...");
+                    txtDia.setText(null);
+                    txtDia.requestFocus();
+                }
+            } else{
+                JOptionPane.showMessageDialog(null, "Recuerde que el formato es MM (2 digitos)");
                 txtDia.setText(null);
                 txtDia.requestFocus();
-            }
-        } else{
-            JOptionPane.showMessageDialog(null, "Recuerde que el formato es MM (2 digitos)");
-            txtDia.setText(null);
-            txtDia.requestFocus();
+            }    
+        } catch (Exception e) {
+           txtMes.requestFocus();
         }
+
     }//GEN-LAST:event_txtDiaFocusLost
 
     /**

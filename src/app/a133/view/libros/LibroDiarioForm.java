@@ -7,7 +7,6 @@ package app.a133.view.libros;
 
 import app.a133.connection.MyConnection;
 import app.a133.model.LibroDiarioFila;
-import app.a133.view.system.SystemMainForm;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -25,8 +24,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -65,13 +62,15 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         MyConnection mycon = new MyConnection();
         Connection con = mycon.getMyConnection();
         try {
-            String sql = "SELECT razon_social,cuit,domicilio_fiscal FROM empresa WHERE id_empresa = 1;";
+            String sql = "SELECT razon_social,cuit,domicilio_fiscal,telefono,mail FROM empresa WHERE id_empresa = 1;";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if(rs.next()){
                 lblNombre.setText(rs.getString("razon_social"));
                 lblCuit.setText("CUIT: "+rs.getString("cuit").substring(0, 2)+"-"+rs.getString("cuit").substring(2, 10)+"-"+rs.getString("cuit").substring(10));
                 lblDireccion.setText("Dirección: "+rs.getString("domicilio_fiscal"));
+                lblTelefono.setText("Telefono: "+rs.getString("telefono"));
+                lblMail.setText("Mail: "+rs.getString("mail"));
             } 
         } catch (Exception e) {
         } finally{
@@ -244,6 +243,8 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         lblPeriodo = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
         btnGenerarPDF = new javax.swing.JButton();
+        lblTelefono = new javax.swing.JLabel();
+        lblMail = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -328,6 +329,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         jtMovimientos.setShowGrid(true);
         jScrollPane1.setViewportView(jtMovimientos);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Periodo:");
 
         lblPeriodo.setText("año");
@@ -346,6 +348,10 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             }
         });
 
+        lblTelefono.setText("Telefono");
+
+        lblMail.setText("Mail");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -359,15 +365,16 @@ public class LibroDiarioForm extends javax.swing.JFrame {
                     .addComponent(lblCuit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGenerarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnGenerarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -381,12 +388,16 @@ public class LibroDiarioForm extends javax.swing.JFrame {
                 .addComponent(lblDireccion)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addGap(38, 38, 38)
+                .addGap(29, 29, 29)
+                .addComponent(lblTelefono)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMail)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblPeriodo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblFecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
@@ -441,13 +452,40 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             Paragraph cuit = new Paragraph(10);
             com.itextpdf.text.Font negrita2 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN,12,com.itextpdf.text.Font.BOLD, BaseColor.BLACK);
             cuit.setFont(negrita2);
+            cuit.add(Chunk.NEWLINE);
             cuit.add(lblCuit.getText());
             cuit.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
             
             doc.add(cuit);
             
-            Paragraph periodo = new Paragraph(10);
             com.itextpdf.text.Font minus = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN,8,com.itextpdf.text.Font.ITALIC, BaseColor.BLACK);
+            
+            Paragraph telefono = new Paragraph(8);
+            telefono.setFont(minus);
+            telefono.add(lblTelefono.getText());
+            telefono.add(Chunk.NEWLINE);
+            telefono.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            doc.add(telefono);
+            
+            Paragraph mail = new Paragraph(8);
+            mail.setFont(minus);
+            mail.add(lblMail.getText());
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.add(Chunk.NEWLINE);
+            mail.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            doc.add(mail);
+            
+            Paragraph titulo = new Paragraph(10);
+            com.itextpdf.text.Font courier = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER,16,com.itextpdf.text.Font.BOLDITALIC, BaseColor.BLACK);
+            titulo.setFont(courier);
+            titulo.add("LIBRO DIARIO - "+fecha);
+            titulo.add(Chunk.NEWLINE);
+            titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            doc.add(titulo);
+            
+            Paragraph periodo = new Paragraph(10);
             periodo.setFont(minus);
             periodo.add("Periodo: "+lblPeriodo.getText());
             periodo.add(Chunk.NEWLINE);
@@ -455,16 +493,6 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             periodo.add(Chunk.NEWLINE);
             periodo.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
             doc.add(periodo);
-            
-            Paragraph titulo = new Paragraph(10);
-            com.itextpdf.text.Font courier = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER,16,com.itextpdf.text.Font.BOLDITALIC, BaseColor.BLACK);
-            titulo.setFont(courier);
-            titulo.add("LIBRO DIARIO - "+fecha);
-            titulo.add(Chunk.NEWLINE);
-            titulo.add(Chunk.NEWLINE);
-            titulo.add(Chunk.NEWLINE);
-            titulo.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            doc.add(titulo);
             
             float[] weights = {1,3,8,3,3,12};
             
@@ -544,7 +572,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerarPDFActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        SystemMainForm form = new SystemMainForm();
+        LibroDiarioGenerarForm form = new LibroDiarioGenerarForm();
         form.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -594,7 +622,9 @@ public class LibroDiarioForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblCuit;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblMail;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPeriodo;
+    private javax.swing.JLabel lblTelefono;
     // End of variables declaration//GEN-END:variables
 }
