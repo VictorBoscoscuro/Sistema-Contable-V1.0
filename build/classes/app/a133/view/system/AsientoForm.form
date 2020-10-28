@@ -598,8 +598,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCodigoBuscarCuenta">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCodigoBuscarCuentaKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNombreBuscarCuenta">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNombreBuscarCuentaKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCopiarCodigoPortapapeles">
       <Properties>

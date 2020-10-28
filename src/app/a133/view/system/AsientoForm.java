@@ -17,6 +17,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -560,6 +561,18 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         jLabel6.setText("Buscar por nombre");
+
+        txtCodigoBuscarCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoBuscarCuentaKeyTyped(evt);
+            }
+        });
+
+        txtNombreBuscarCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreBuscarCuentaKeyTyped(evt);
+            }
+        });
 
         btnCopiarCodigoPortapapeles.setText("Copiar codigo");
         btnCopiarCodigoPortapapeles.addActionListener(new java.awt.event.ActionListener() {
@@ -2562,6 +2575,27 @@ public class AsientoForm extends javax.swing.JFrame implements ClipboardOwner{
             } catch (Exception e ) {}
         }
     }//GEN-LAST:event_txtCuenta8FocusLost
+
+    private void txtCodigoBuscarCuentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoBuscarCuentaKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            btnBuscarCodigo.doClick();
+        }
+        if(txtCodigoBuscarCuenta.getText().length() < 5){
+            if(evt.getKeyChar() != 127 && evt.getKeyChar() != 8 && evt.getKeyChar() != KeyEvent.VK_ENTER){
+                if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+                }
+            }
+        } else evt.consume();
+    }//GEN-LAST:event_txtCodigoBuscarCuentaKeyTyped
+
+    private void txtNombreBuscarCuentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreBuscarCuentaKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            btnBuscarNombre.doClick();
+        }
+    }//GEN-LAST:event_txtNombreBuscarCuentaKeyTyped
 
         public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -207,8 +207,9 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
                 if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                     evt.consume();
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null, "Solo numeros");               
-                }
+                    JOptionPane.showMessageDialog(null, "Solo numeros"); 
+                    txtAnio.requestFocus();
+                } 
             }
         } else evt.consume();
     }//GEN-LAST:event_txtAnioKeyTyped
@@ -219,7 +220,8 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
                 if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                     evt.consume();
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null, "Solo numeros");               
+                    JOptionPane.showMessageDialog(null, "Solo numeros");
+                    txtMes.requestFocus();
                 }
             }
         } else evt.consume();
@@ -234,16 +236,16 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
                     if(evt.getKeyChar() < 48 || evt.getKeyChar() > 57  ){
                         evt.consume();
                         Toolkit.getDefaultToolkit().beep();
-                        JOptionPane.showMessageDialog(null, "Solo numeros");               
+                        JOptionPane.showMessageDialog(null, "Solo numeros"); 
+                        txtDia.requestFocus();
                     }
                 }
             } else evt.consume();
-        }
-        
-        
+        }        
     }//GEN-LAST:event_txtDiaKeyTyped
 
     private void txtAnioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAnioFocusLost
+        try{
         Integer anio = Integer.parseInt(txtAnio.getText());
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -251,6 +253,9 @@ public class LibroDiarioGenerarForm extends javax.swing.JFrame {
         if(anio < 1950 || anio > anioActual){
             JOptionPane.showMessageDialog(null, "Ingrese un año válido...");   
             txtAnio.setText(null);
+        }
+        } catch(Exception e){
+            
         }
     }//GEN-LAST:event_txtAnioFocusLost
 
