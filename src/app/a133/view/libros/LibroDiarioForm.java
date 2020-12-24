@@ -153,9 +153,125 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         
     }
 
+    public LibroDiarioForm(String anioDesde, String mesDesde, String diaDesde, String anioHasta, String mesHasta, String diaHasta){
+        initComponents();
+        this.anioDesde = anioDesde;
+        this.mesDesde = mesDesde;
+        this.diaDesde = diaDesde;
+        this.anioHasta = anioHasta;
+        this.mesHasta = mesHasta;
+        this.diaHasta = diaHasta;
+        setTitle("Libro Diario");
+        setLocationRelativeTo(null);
+        lblFecha.setText(anioDesde+"/"+mesDesde+"/"+diaDesde+" - "+anioHasta+"/"+mesHasta+"/"+diaHasta);
+        formatoTabla();
+        lblPeriodo.setText(anioDesde);
+        
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        MyConnection mycon = new MyConnection();
+        Connection con = mycon.getMyConnection();
+        try {
+            String sql = "SELECT razon_social,cuit,domicilio_fiscal,telefono,mail FROM empresa WHERE id_empresa = 1;";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                lblNombre.setText(rs.getString("razon_social"));
+                lblCuit.setText("CUIT: "+rs.getString("cuit").substring(0, 2)+"-"+rs.getString("cuit").substring(2, 10)+"-"+rs.getString("cuit").substring(10));
+                lblDireccion.setText("Dirección: "+rs.getString("domicilio_fiscal"));
+                lblTelefono.setText("Telefono: "+rs.getString("telefono"));
+                lblMail.setText("Mail: "+rs.getString("mail"));
+            } 
+        } catch (Exception e) {
+        } finally{
+            try{rs.close();} catch(Exception e){}
+            try{ps.close();} catch(Exception e){}
+            try{con.close();} catch(Exception e){}
+        }
+        PreparedStatement ps2 = null;
+        ResultSet rs2 = null;
+        MyConnection mycon2 = new MyConnection();
+        Connection con2 = mycon2.getMyConnection();
+        try {
+            String fechaStringDesde = anioDesde+"-"+mesDesde+"-"+diaDesde;
+            String fechaStringHasta = anioHasta+"-"+mesHasta+"-"+diaHasta;
+            String sql2 = "SELECT ac.id_asiento_cuenta AS ID_AC,c.codigo AS CODIGO_CUENTA,c.nombre AS NOMBRE_CUENTA,ac.debe AS DEBE,ac.haber AS HABER,a.leyenda AS LEYENDA FROM cuenta c INNER JOIN asiento_cuenta ac USING(id_cuenta) INNER JOIN asiento a USING(id_asiento) WHERE a.fecha BETWEEN CAST('"+fechaStringDesde+"' AS DATE) AND CAST('"+fechaStringHasta+"' AS DATE) ORDER BY a.fecha, ac.id_asiento_cuenta;";
+            ps2 = con2.prepareStatement(sql2);
+            rs2 = ps2.executeQuery();
+            
+            ResultSetMetaData rsMD = rs2.getMetaData();
+            
+            DefaultTableModel model = new DefaultTableModel();
+            jtMovimientos.setModel(model);
+            
+            int numberColumns = rsMD.getColumnCount();
+            
+            model.addColumn("#");
+            model.addColumn("Cuenta #");
+            model.addColumn("Cuenta");
+            model.addColumn("Debe");
+            model.addColumn("Haber");
+            model.addColumn("Leyenda");
+            
+            formatoTabla();
+            
+            while(rs2.next()){
+                Object[] rows = new Object[numberColumns];
+                
+                LibroDiarioFila l = new LibroDiarioFila();
+                l.setId_asiento_cuenta(rs2.getLong("ID_AC"));
+                l.setCodigo_cuenta(rs2.getString("CODIGO_CUENTA"));
+                if(rs2.getDouble("DEBE") == 0.0){
+                    l.setNombre_cuenta("    "+rs2.getString("NOMBRE_CUENTA"));}
+                else l.setNombre_cuenta(rs2.getString("NOMBRE_CUENTA"));
+                l.setDebe(rs2.getDouble("DEBE"));
+                l.setHaber(rs2.getDouble("HABER"));
+                l.setLeyenda(rs2.getString("LEYENDA"));
+                filas.add(l);
+                
+                for (int i = 0; i<numberColumns; i++) {
+                    if(i==2){
+                        if(rs2.getDouble("DEBE")==0.0){
+                            rows[i] = "    "+rs2.getObject(i+1);
+                        } else {
+                           rows[i] = rs2.getObject(i+1); 
+                        }
+                    }else{
+                        rows[i] = rs2.getObject(i+1);
+                    }
+                    if(i==3){
+                       if(rs2.getDouble("DEBE")==0.0){
+                           rows[i] = "";
+                       } 
+                    }
+                    if(i==4){
+                       if(rs2.getDouble("HABER")==0.0){
+                           rows[i] = "";
+                       } 
+                    }
+                    
+                }
+                model.addRow(rows);
+            }                    
+        } catch (Exception e) {
+        } finally{
+            try{rs2.close();} catch(Exception e){}
+            try{ps2.close();} catch(Exception e){}
+            try{con2.close();} catch(Exception e){}
+            
+        }
+        
+    }
+    
     private String anio;
     private String mes;
     private String dia;
+    private String anioDesde;
+    private String anioHasta;
+    private String mesDesde;
+    private String mesHasta;
+    private String diaDesde;
+    private String diaHasta;
     private List<LibroDiarioFila> filas = new ArrayList<LibroDiarioFila>();
     
     
@@ -224,8 +340,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
         
         jtMovimientos.getColumnModel().getColumn(5).setHeaderRenderer(leyendaHR);
         jtMovimientos.getColumnModel().getColumn(5).setCellRenderer(leyendaCR);
-        
-
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -494,7 +609,7 @@ public class LibroDiarioForm extends javax.swing.JFrame {
             periodo.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
             doc.add(periodo);
             
-            float[] weights = {1,3,8,3,3,12};
+            float[] weights = {1,3,10,3,3,12};
             
             PdfPTable tabla = new PdfPTable(weights);
             tabla.setWidthPercentage(100);
